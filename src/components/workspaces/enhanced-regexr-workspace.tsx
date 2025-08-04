@@ -14,7 +14,8 @@ import {
   AIDebugHelper,
   AIPatternOptimizer
 } from '../regexr'
-import { useAIServiceStatus } from '../../hooks/use-ai-service'
+import { EnhancedComponentPalette } from '../regexr/enhanced-component-palette'
+import { useAIService } from '../../hooks/use-ai-service'
 import type { RegexComponent, PlacedComponent } from '../../types'
 
 interface EnhancedRegexrWorkspaceProps {
@@ -29,7 +30,7 @@ export function EnhancedRegexrWorkspace({ className = '' }: EnhancedRegexrWorksp
   const [activeAIPanel, setActiveAIPanel] = useState<'assistant' | 'explainer' | 'debug' | 'optimizer' | null>(null)
   const [showAIPanels, setShowAIPanels] = useState(false)
   
-  const aiStatus = useAIServiceStatus()
+  const aiStatus = useAIService()
 
   const handleComponentSelect = useCallback((component: RegexComponent) => {
     // Create a placed component from the selected component
@@ -43,6 +44,14 @@ export function EnhancedRegexrWorkspace({ className = '' }: EnhancedRegexrWorksp
     }
     setSelectedComponent(placedComponent)
     setHelpComponent(component)
+    
+    // Update the current pattern with the component's regex
+    setCurrentPattern(component.regexPattern)
+  }, [])
+
+  const handleComponentDrag = useCallback((component: RegexComponent, event: React.DragEvent) => {
+    // Handle drag start for the component
+    console.log('Component drag started:', component.name)
   }, [])
 
   const handlePatternGenerated = useCallback((pattern: string, explanation: string) => {
@@ -74,10 +83,11 @@ export function EnhancedRegexrWorkspace({ className = '' }: EnhancedRegexrWorksp
 
   return (
     <div className={`flex h-full ${className}`}>
-      {/* Left Sidebar - Component Palette */}
-      <ComponentPalette
+      {/* Left Sidebar - Enhanced Component Palette */}
+      <EnhancedComponentPalette
         onComponentSelect={handleComponentSelect}
-        className="flex-shrink-0"
+        onComponentDrag={handleComponentDrag}
+        className="flex-shrink-0 w-80"
       />
 
       {/* Main Content Area */}

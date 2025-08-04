@@ -1,4 +1,5 @@
 export { ComponentPalette } from './component-palette'
+export { EnhancedComponentPalette } from './enhanced-component-palette'
 export { ComponentParameterPanel } from './component-parameter-panel'
 export { ComponentHelpPanel } from './component-help-panel'
 export { AIRegexAssistant } from './ai-regex-assistant'
