@@ -1,0 +1,83 @@
+/* DevKit Flow Application Styles */
+
+#root {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* React Flow specific styles */
+.react-flow__node {
+  font-family: inherit;
+}
+
+.react-flow__edge {
+  pointer-events: all;
+}
+
+.react-flow__edge-path {
+  cursor: pointer;
+}
+
+.react-flow__handle {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.react-flow__node:hover .react-flow__handle {
+  opacity: 1;
+}
+
+.react-flow__node.selected .react-flow__handle {
+  opacity: 1;
+}
+
+/* Custom node styles */
+.devflow-node {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.devflow-node:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.devflow-node.selected {
+  box-shadow: 0 0 0 2px hsl(var(--primary));
+}
+
+/* Canvas grid */
+.react-flow__background {
+  opacity: 0.4;
+}
+
+/* Minimap styles */
+.react-flow__minimap {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Controls styles */
+.react-flow__controls {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.react-flow__controls-button {
+  border: none;
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.react-flow__controls-button:hover {
+  background: hsl(var(--muted));
+}
+
+/* Selection box */
+.react-flow__selection {
+  background: hsl(var(--primary) / 0.1);
+  border: 1px solid hsl(var(--primary));
+}
