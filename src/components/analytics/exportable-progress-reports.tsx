@@ -1,10 +1,8 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { 
   Download, 
   FileText, 
-  Image, 
-  Share2, 
-  Calendar,
+  Share2,
   BarChart3,
   TrendingUp,
   Clock,

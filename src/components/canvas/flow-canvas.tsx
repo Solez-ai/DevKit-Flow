@@ -27,7 +27,6 @@ import { ConnectionDialog } from './connection-dialog'
 import { ConnectionTypeSelector } from './connection-type-selector'
 import { CanvasContextMenu } from './context-menu'
 import { useSelectionSystem, SelectionInfo } from './selection-system'
-import { useCanvasShortcuts } from './canvas-shortcuts'
 import { Button } from '@/components/ui/button'
 import { 
   Grid3X3, 
@@ -73,7 +72,7 @@ export function FlowCanvas({ sessionId }: FlowCanvasProps) {
   
   // Local canvas state
   const [gridVisible, setGridVisible] = useState(userPreferences.behavior.gridVisible)
-  const [snapToGrid, setSnapToGrid] = useState(userPreferences.behavior.snapToGrid)
+  const [snapToGrid] = useState(userPreferences.behavior.snapToGrid)
   const [minimapVisible, setMinimapVisible] = useState(true)
   const [selectionMode, setSelectionMode] = useState<SelectionMode>(SelectionMode.Partial)
   const [panMode] = useState<PanOnScrollMode>(PanOnScrollMode.Free)
@@ -152,9 +151,7 @@ export function FlowCanvas({ sessionId }: FlowCanvasProps) {
     handleMouseDown: handleSelectionMouseDown,
     handleMouseMove: handleSelectionMouseMove,
     handleMouseUp: handleSelectionMouseUp,
-    selectAll,
     clearSelection,
-    invertSelection,
     SelectionBox
   } = useSelectionSystem({
     onSelectionChange: (selectedNodes, selectedEdges) => {
@@ -413,28 +410,7 @@ export function FlowCanvas({ sessionId }: FlowCanvasProps) {
     handleSelectionMouseUp(event)
   }, [handleSelectionMouseUp])
 
-  // Handle node deletion
-  const handleDeleteNodes = useCallback((nodeIds: string[]) => {
-    if (!session) return
-
-    const updatedNodes = session.nodes.filter(n => !nodeIds.includes(n.id))
-    const updatedConnections = session.connections.filter(c => 
-      !nodeIds.includes(c.sourceNodeId) && !nodeIds.includes(c.targetNodeId)
-    )
-
-    updateSession(sessionId, { 
-      nodes: updatedNodes, 
-      connections: updatedConnections 
-    })
-  }, [session, sessionId, updateSession])
-
-  // Handle connection deletion
-  const handleDeleteConnections = useCallback((connectionIds: string[]) => {
-    if (!session) return
-
-    const updatedConnections = session.connections.filter(c => !connectionIds.includes(c.id))
-    updateSession(sessionId, { connections: updatedConnections })
-  }, [session, sessionId, updateSession])
+  // Node and connection deletion functions removed (unused)
 
 
 

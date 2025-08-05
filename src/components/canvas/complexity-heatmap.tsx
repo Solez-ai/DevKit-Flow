@@ -1,4 +1,4 @@
-import React from 'react'
+
 import { motion } from 'framer-motion'
 import type { ComplexityHeatmapData, ComplexityLevel } from '@/types'
 import { useComplexityHeatmap } from '@/hooks/use-complexity-estimation'

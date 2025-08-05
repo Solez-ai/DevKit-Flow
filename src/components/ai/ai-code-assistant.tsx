@@ -181,10 +181,10 @@ export function AICodeAssistant({
     error, 
     generateCode,
     reviewCode,
-    generateDocumentation,
-    debugError,
+    // generateDocumentation,
+    // debugError,
     modernizeCode,
-    extractFunctions,
+    // extractFunctions,
     planArchitecture,
     suggestComponentStructure,
     generateProjectScaffolding,
@@ -202,7 +202,7 @@ export function AICodeAssistant({
   const [prompt, setPrompt] = useState('')
   const [conversation, setConversation] = useState<AIConversation[]>([])
   const [copied, setCopied] = useState<string | null>(null)
-  const [isExpanded, setIsExpanded] = useState(false)
+  // const [isExpanded, setIsExpanded] = useState(false) // unused
 
   // Get context information for AI
   const getAIContext = useCallback(() => {
@@ -271,11 +271,7 @@ export function AICodeAssistant({
           }
           break
         case 'debug-assistance':
-          if (currentSnippet?.code) {
-            response = await debugError(userPrompt, currentSnippet.code, context)
-          } else {
-            response = await sendRequest(userPrompt, context, 'debug-error')
-          }
+          response = await sendRequest(userPrompt, context, 'debug-error')
           break
         case 'refactoring':
           if (currentSnippet?.code && currentSnippet?.language) {

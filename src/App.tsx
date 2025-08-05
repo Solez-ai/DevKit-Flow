@@ -7,7 +7,7 @@ import { Toaster } from '@/components/ui/toaster'
 import './App.css'
 
 function App() {
-  const { theme } = useTheme()
+  useTheme() // theme not used
   const { updateStorageQuota } = useStorage()
   const { initializeAI } = useAIConfig()
 

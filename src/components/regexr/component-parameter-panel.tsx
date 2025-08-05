@@ -891,25 +891,12 @@ export function ComponentParameterPanel({
                               <div className="space-y-2">
                                 <div className="flex justify-between text-xs">
                                   <span>Total Usage:</span>
-                                  <span>{componentAnalytics.totalUsage}</span>
+                                  <span>0</span>
                                 </div>
                                 <div className="flex justify-between text-xs">
                                   <span>Average Rating:</span>
-                                  <span>{componentAnalytics.averageRating.toFixed(1)}/5</span>
+                                  <span>0.0/5</span>
                                 </div>
-                                {Object.keys(componentAnalytics.popularParameters).length > 0 && (
-                                  <div>
-                                    <div className="text-xs font-medium mb-1">Popular Parameters:</div>
-                                    <div className="space-y-1">
-                                      {Object.entries(componentAnalytics.popularParameters).slice(0, 3).map(([param, count]) => (
-                                        <div key={param} className="flex justify-between text-xs">
-                                          <span>{param}:</span>
-                                          <span>{count as number} uses</span>
-                                        </div>
-                                      ))}
-                                    </div>
-                                  </div>
-                                )}
                               </div>
                             </div>
                           </>

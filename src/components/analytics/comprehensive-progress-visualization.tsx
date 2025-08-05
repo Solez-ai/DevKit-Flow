@@ -6,16 +6,13 @@ import {
   Target,
   Settings,
   Download,
-  RefreshCw,
-  Eye,
-  EyeOff
+  RefreshCw
 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
-import { Separator } from '@/components/ui/separator'
 import { useProgressAnalytics } from '@/hooks/use-progress-analytics'
 import { ProgressDashboard } from './progress-dashboard'
 import { SessionStatisticsDashboard } from './session-statistics-dashboard'

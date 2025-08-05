@@ -23,7 +23,7 @@ import {
 import { useAIService } from '@/hooks/use-ai-service'
 import { useSessions } from '@/hooks/use-app-store'
 import { AIStatusIcon } from './ai-status-indicator'
-import type { DevFlowNode, CodeSnippet } from '@/types'
+import type { DevFlowNode } from '@/types'
 
 interface AIContextPanelProps {
   /**

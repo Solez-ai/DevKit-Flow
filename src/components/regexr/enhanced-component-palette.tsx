@@ -121,12 +121,12 @@ export const EnhancedComponentPalette: React.FC<EnhancedComponentPaletteProps> =
         id: `ai-${Date.now()}`,
         name: `AI: ${searchQuery}`,
         description: `AI-generated pattern for: ${searchQuery}`,
-        category: 'character-classes' as ComponentCategory,
+        category: 'character-classes',
         regexPattern: `.*${searchQuery}.*`,
         visualRepresentation: {
           icon: 'sparkles',
           color: '#8B5CF6',
-          // preview property removed - not supported in base ComponentVisual type
+          label: 'AI Generated'
         },
         examples: [searchQuery],
         commonUses: [searchQuery]

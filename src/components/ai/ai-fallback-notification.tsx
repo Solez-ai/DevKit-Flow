@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { 
   AlertTriangle, 
-  Wifi, 
+  // Wifi, // unused
   WifiOff, 
   RefreshCw, 
   X, 

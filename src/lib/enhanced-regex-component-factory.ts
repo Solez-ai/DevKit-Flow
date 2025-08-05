@@ -101,10 +101,10 @@ export class EnhancedComponentFactory implements ComponentFactory {
         warningMessages: {}
       },
       
-      documentation: definition.documentation || {
-        summary: definition.description,
-        detailedDescription: definition.description,
-        syntaxExplanation: definition.regexPattern,
+      documentation: {
+        summary: definition.documentation?.summary || definition.description || '',
+        detailedDescription: definition.documentation?.detailedDescription || definition.description || '',
+        syntaxExplanation: definition.documentation?.syntaxExplanation || definition.regexPattern || '',
         useCases: [],
         examples: [],
         relatedComponents: [],

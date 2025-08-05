@@ -460,7 +460,7 @@ export function searchPatternLibrary(query: string): any[] {
   return allPatterns.filter(pattern =>
     pattern.name.toLowerCase().includes(lowercaseQuery) ||
     pattern.description.toLowerCase().includes(lowercaseQuery) ||
-    pattern.tags.some(tag => tag.toLowerCase().includes(lowercaseQuery)) ||
+    pattern.tags.some((tag: string) => tag.toLowerCase().includes(lowercaseQuery)) ||
     pattern.category.toLowerCase().includes(lowercaseQuery)
   )
 }
@@ -472,7 +472,7 @@ export function getPatternsByCategory(category: string): any[] {
   const allPatterns: any[] = []
   
   for (const library of patternLibraryIntegration.libraries) {
-    allPatterns.push(...library.patterns.filter(p => p.category === category))
+    allPatterns.push(...library.patterns.filter((p: any) => p.category === category))
   }
   
   return allPatterns.sort((a, b) => b.popularity - a.popularity)
@@ -498,7 +498,7 @@ export function getPopularPatterns(limit: number = 10): any[] {
  */
 export function getPatternById(patternId: string): any | null {
   for (const library of patternLibraryIntegration.libraries) {
-    const pattern = library.patterns.find(p => p.id === patternId)
+    const pattern = library.patterns.find((p: any) => p.id === patternId)
     if (pattern) return pattern
   }
   return null
@@ -516,7 +516,7 @@ export function addCustomPattern(pattern: any): any {
   }
   
   // Add to community library
-  const communityLibrary = patternLibraryIntegration.libraries.find(l => l.id === 'community-patterns')
+  const communityLibrary = patternLibraryIntegration.libraries.find((l: any) => l.id === 'community-patterns')
   if (communityLibrary) {
     communityLibrary.patterns.push(newPattern)
   }

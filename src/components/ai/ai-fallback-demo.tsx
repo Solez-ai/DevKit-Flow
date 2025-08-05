@@ -30,7 +30,7 @@ export function AIFallbackDemo() {
   const { 
     isAvailable, 
     isFallbackMode, 
-    error, 
+    // error, // unused
     enableFallbackMode, 
     disableFallbackMode,
     generateCode,
