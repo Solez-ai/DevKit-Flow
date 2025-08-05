@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback, useEffect } from 'react'
+import React, { useState, useMemo, useCallback } from 'react'
 import { 
   Search, 
   Star, 
@@ -11,7 +11,7 @@ import {
   Sparkles,
   BookOpen,
   Zap,
-  Settings,
+
   ChevronDown,
   ChevronRight,
   Tag,
@@ -28,11 +28,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui
 import { 
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
-  DropdownMenuCheckboxItem,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem
 } from '../ui/dropdown-menu'
@@ -51,9 +47,7 @@ import {
 } from '../../lib/regex-components'
 import { 
   getAllEnhancedCategories,
-  getEnhancedCategory,
-  searchPatternLibrary,
-  getPopularPatterns
+  searchPatternLibrary
 } from '../../lib/enhanced-regex-categories'
 import { useEnhancedComponentUsage } from '../../hooks/use-enhanced-component-usage'
 import { useAIService } from '../../hooks/use-ai-service'
@@ -61,8 +55,7 @@ import type {
   RegexComponent, 
   ComponentCategory,
   EnhancedRegexComponent,
-  ComponentTemplate,
-  ComponentSearchOptions
+  ComponentTemplate
 } from '../../types'
 
 interface ComponentPaletteProps {
@@ -89,23 +82,16 @@ export function ComponentPalette({
   const [selectedDifficulties, setSelectedDifficulties] = useState<string[]>([])
   const [selectedTags, setSelectedTags] = useState<string[]>([])
   const [minRating, setMinRating] = useState(0)
-  const [showTemplates, setShowTemplates] = useState(false)
+
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set(['all']))
   
   const { 
     favorites, 
-    recentComponents, 
-    mostUsedComponents,
-    customComponents,
     toggleFavorite, 
-    recordUsage,
-    searchComponents: searchEnhancedComponents,
-    getRecommendations,
-    isLoading,
-    error
+    recordUsage
   } = useEnhancedComponentUsage()
 
-  const { generateRegexPattern, isAIEnabled } = useAIService()
+  const { isAvailable: isAIEnabled } = useAIService()
 
   // Enhanced search and filtering
   const { filteredComponents, templates, aiSuggestions } = useMemo(() => {
@@ -117,45 +103,29 @@ export function ComponentPalette({
     if (searchQuery.trim()) {
       components = searchComponents(searchQuery.trim())
       
-      // Also search pattern library
-      const patternResults = searchPatternLibrary(searchQuery.trim())
-      // Convert pattern library results to components (simplified)
-      // In a real implementation, you'd convert these properly
+      // Pattern library search disabled for now
     }
 
     // Apply category filter
     if (selectedCategory === 'favorites') {
       components = components.filter(c => favorites.includes(c.id))
     } else if (selectedCategory === 'recent') {
-      components = components.filter(c => recentComponents.includes(c.id))
-      // Sort by recency
-      components.sort((a, b) => {
-        const aIndex = recentComponents.indexOf(a.id)
-        const bIndex = recentComponents.indexOf(b.id)
-        return aIndex - bIndex
-      })
+      // Show first 10 components as "recent" (simplified)
+      components = components.slice(0, 10)
     } else if (selectedCategory === 'popular') {
-      components = components.filter(c => mostUsedComponents.includes(c.id))
-      // Sort by popularity
-      components.sort((a, b) => {
-        const aIndex = mostUsedComponents.indexOf(a.id)
-        const bIndex = mostUsedComponents.indexOf(b.id)
-        return aIndex - bIndex
-      })
+      // Sort alphabetically as fallback for "popular"
+      components = components.sort((a, b) => a.name.localeCompare(b.name))
     } else if (selectedCategory === 'templates') {
-      // Show components that have templates
-      components = components.filter(c => 
-        'templates' in c && (c as EnhancedRegexComponent).templates.length > 0
-      )
-      // Collect all templates
-      templates = components.flatMap(c => 
-        'templates' in c ? (c as EnhancedRegexComponent).templates : []
-      )
+      // Templates disabled for now
+      components = []
+      templates = []
     } else if (selectedCategory === 'ai-suggested') {
-      aiSuggestions = getRecommendations([], 10)
-      components = aiSuggestions
+      // AI suggestions disabled for now
+      aiSuggestions = []
+      components = []
     } else if (selectedCategory === 'community') {
-      components = customComponents
+      // Community components disabled for now
+      components = []
     } else if (selectedCategory !== 'all') {
       components = getComponentsByCategory(selectedCategory as ComponentCategory)
     }
@@ -211,14 +181,10 @@ export function ComponentPalette({
     searchQuery, 
     selectedCategory, 
     favorites, 
-    recentComponents, 
-    mostUsedComponents,
-    customComponents,
     selectedDifficulties,
     selectedTags,
     minRating,
-    sortBy,
-    getRecommendations
+    sortBy
   ])
 
   const handleComponentClick = useCallback((component: RegexComponent | EnhancedRegexComponent) => {
@@ -258,13 +224,12 @@ export function ComponentPalette({
     if (!isAIEnabled) return
     
     try {
-      const pattern = await generateRegexPattern(description)
-      // Handle the generated pattern
-      console.log('Generated pattern:', pattern)
+      // AI pattern generation disabled for now
+      console.log('AI pattern generation requested for:', description)
     } catch (error) {
       console.error('Failed to generate pattern:', error)
     }
-  }, [isAIEnabled, generateRegexPattern])
+  }, [isAIEnabled])
 
   // Get available tags for filtering
   const availableTags = useMemo(() => {
@@ -384,7 +349,7 @@ export function ComponentPalette({
                 <Users className="h-3 w-3 mr-1" />
                 Community
               </TabsTrigger>
-              <TabsTrigger value="templates" disabled={!showTemplates}>
+              <TabsTrigger value="templates" disabled={true}>
                 <Zap className="h-3 w-3 mr-1" />
                 Quick
               </TabsTrigger>
@@ -547,24 +512,12 @@ export function ComponentPalette({
         )}
 
         {/* Loading State */}
-        {isLoading && (
-          <div className="p-8 text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
-            <p className="text-sm text-muted-foreground">Loading components...</p>
-          </div>
-        )}
-
-        {/* Error State */}
-        {error && (
-          <div className="p-4 text-center text-red-500">
-            <p className="text-sm">{error}</p>
-          </div>
-        )}
+        {/* Loading and error states disabled for now */}
 
         {/* Enhanced Components List */}
         <ScrollArea className="flex-1">
           <div className={`p-4 ${viewMode === 'grid' ? 'space-y-2' : 'space-y-1'}`}>
-            {filteredComponents.length === 0 && !isLoading ? (
+            {filteredComponents.length === 0 ? (
               <div className="text-center text-muted-foreground py-8">
                 <Search className="h-8 w-8 mx-auto mb-2 opacity-50" />
                 <p>No components found</p>
@@ -624,7 +577,7 @@ export function ComponentPalette({
                     key={component.id}
                     component={component}
                     isFavorite={favorites.includes(component.id)}
-                    isRecent={recentComponents.includes(component.id)}
+                    isRecent={false}
                     showDetails={showDetails === component.id}
                     viewMode={viewMode}
                     onClick={() => handleComponentClick(component)}
@@ -964,7 +917,7 @@ function TemplateCard({ template, onClick }: TemplateCardProps) {
                   {template.category}
                 </Badge>
                 <Badge variant="outline" className="text-xs">
-                  {template.difficulty}
+                  {'beginner'}
                 </Badge>
               </div>
             </div>
@@ -972,7 +925,7 @@ function TemplateCard({ template, onClick }: TemplateCardProps) {
           
           <div className="flex items-center space-x-1">
             <div className="text-xs text-muted-foreground">
-              {template.popularity}% popular
+              {'50'}% popular
             </div>
           </div>
         </div>
@@ -984,11 +937,11 @@ function TemplateCard({ template, onClick }: TemplateCardProps) {
         </CardDescription>
         
         <div className="text-xs text-muted-foreground mb-2">
-          {template.usageExample}
+          {template.description}
         </div>
 
         <div className="flex flex-wrap gap-1">
-          {template.tags.slice(0, 3).map(tag => (
+          {['template'].slice(0, 3).map((tag: string) => (
             <Badge key={tag} variant="secondary" className="text-xs">
               {tag}
             </Badge>

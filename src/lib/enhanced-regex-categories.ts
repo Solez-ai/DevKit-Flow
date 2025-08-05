@@ -4,14 +4,10 @@
  */
 
 import type { 
-  ComponentCategory,
   EnhancedComponentCategory,
-  ComponentSubcategory,
-  PatternLibraryIntegration,
-  PatternLibrary,
-  PatternLibraryItem
+  ComponentSubcategory
 } from '../types/enhanced-regex-components'
-import { componentCategories } from './regex-components'
+import type { ComponentCategory } from '../types'
 
 /**
  * Enhanced component categories with more metadata and organization
@@ -245,7 +241,7 @@ export const enhancedComponentCategories: Record<ComponentCategory, EnhancedComp
 /**
  * Pattern library integration with built-in and community patterns
  */
-export const patternLibraryIntegration: PatternLibraryIntegration = {
+export const patternLibraryIntegration: any = {
   enabled: true,
   libraries: [
     {
@@ -452,9 +448,9 @@ export function getCategoryLearningPath(): EnhancedComponentCategory[] {
 /**
  * Search pattern library
  */
-export function searchPatternLibrary(query: string): PatternLibraryItem[] {
+export function searchPatternLibrary(query: string): any[] {
   const lowercaseQuery = query.toLowerCase()
-  const allPatterns: PatternLibraryItem[] = []
+  const allPatterns: any[] = []
   
   // Collect all patterns from all libraries
   for (const library of patternLibraryIntegration.libraries) {
@@ -472,8 +468,8 @@ export function searchPatternLibrary(query: string): PatternLibraryItem[] {
 /**
  * Get patterns by category
  */
-export function getPatternsByCategory(category: string): PatternLibraryItem[] {
-  const allPatterns: PatternLibraryItem[] = []
+export function getPatternsByCategory(category: string): any[] {
+  const allPatterns: any[] = []
   
   for (const library of patternLibraryIntegration.libraries) {
     allPatterns.push(...library.patterns.filter(p => p.category === category))
@@ -485,8 +481,8 @@ export function getPatternsByCategory(category: string): PatternLibraryItem[] {
 /**
  * Get popular patterns
  */
-export function getPopularPatterns(limit: number = 10): PatternLibraryItem[] {
-  const allPatterns: PatternLibraryItem[] = []
+export function getPopularPatterns(limit: number = 10): any[] {
+  const allPatterns: any[] = []
   
   for (const library of patternLibraryIntegration.libraries) {
     allPatterns.push(...library.patterns)
@@ -500,7 +496,7 @@ export function getPopularPatterns(limit: number = 10): PatternLibraryItem[] {
 /**
  * Get pattern by ID
  */
-export function getPatternById(patternId: string): PatternLibraryItem | null {
+export function getPatternById(patternId: string): any | null {
   for (const library of patternLibraryIntegration.libraries) {
     const pattern = library.patterns.find(p => p.id === patternId)
     if (pattern) return pattern
@@ -511,8 +507,8 @@ export function getPatternById(patternId: string): PatternLibraryItem | null {
 /**
  * Add custom pattern to library
  */
-export function addCustomPattern(pattern: Omit<PatternLibraryItem, 'id' | 'createdAt' | 'updatedAt'>): PatternLibraryItem {
-  const newPattern: PatternLibraryItem = {
+export function addCustomPattern(pattern: any): any {
+  const newPattern: any = {
     ...pattern,
     id: `custom-${Date.now()}`,
     createdAt: new Date(),

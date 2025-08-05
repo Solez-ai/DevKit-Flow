@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { RegexComponent } from '@/types';
+import type { RegexComponent } from '@/types';
 import { allRegexComponents } from '@/lib/regex-components';
 
 interface ComponentUsageStats {

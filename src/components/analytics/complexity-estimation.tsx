@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -12,8 +12,6 @@ import {
   CartesianGrid, 
   Tooltip, 
   ResponsiveContainer,
-  PieChart,
-  Pie,
   Cell
 } from 'recharts'
 import { 
@@ -233,7 +231,7 @@ interface EstimationAccuracyProps {
   formatEstimationTime: (hours: number) => string
 }
 
-function EstimationAccuracy({ analysis, formatEstimationTime }: EstimationAccuracyProps) {
+function EstimationAccuracy({ analysis }: EstimationAccuracyProps) {
   const { estimationAccuracy } = analysis
 
   if (estimationAccuracy.totalEstimations === 0) {

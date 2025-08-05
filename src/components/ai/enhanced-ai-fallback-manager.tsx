@@ -209,7 +209,7 @@ export function EnhancedAIFallbackManager() {
   }
 
   const handleEnableOfflineMode = () => {
-    enableFallbackMode('User requested offline mode')
+    enableFallbackMode()
     setAutoRetryEnabled(false)
   }
 

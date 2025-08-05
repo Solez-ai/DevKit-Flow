@@ -557,20 +557,4 @@ export interface ErrorPattern {
   examples: string[]
 }
 
-// Export interfaces for external use
-export type {
-  EnhancedRegexComponent,
-  ComponentTemplate,
-  ComponentMetadata,
-  AIComponentAssistance,
-  ComponentStatistics,
-  ComponentValidation,
-  ComponentDocumentation,
-  EnhancedComponentCategory,
-  EnhancedPlacedComponent,
-  ComponentLibrary,
-  PatternLibraryIntegration,
-  ComponentFactory,
-  ComponentSearchOptions,
-  ComponentAnalytics
-}
+// All types are already exported above with their definitions

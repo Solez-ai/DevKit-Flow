@@ -1,15 +1,13 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { 
   Play,
-  Square,
   RotateCcw,
   Wifi,
-  WifiOff,
   AlertTriangle,
   CheckCircle,
   Info
@@ -44,7 +42,7 @@ export function AIFallbackDemo() {
   const [demoResults, setDemoResults] = useState<string[]>([])
 
   const simulateNetworkFailure = () => {
-    enableFallbackMode('Simulated network failure')
+    enableFallbackMode()
     toasts.showNetworkErrorToast()
     addDemoResult('❌ Simulated network failure - AI service disabled')
   }

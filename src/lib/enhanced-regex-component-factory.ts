@@ -15,9 +15,8 @@ import type {
   ComponentDocumentation,
   EnhancedPlacedComponent,
   UsageContext,
-  Position
 } from '../types/enhanced-regex-components'
-import type { RegexComponent, PlacedComponent } from '../types'
+import type { RegexComponent, PlacedComponent, Position } from '../types'
 import { 
   allRegexComponents, 
   getComponentById, 
@@ -102,7 +101,19 @@ export class EnhancedComponentFactory implements ComponentFactory {
         warningMessages: {}
       },
       
-      documentation: definition.documentation || this.generateBasicDocumentation(definition)
+      documentation: definition.documentation || {
+        summary: definition.description,
+        detailedDescription: definition.description,
+        syntaxExplanation: definition.regexPattern,
+        useCases: [],
+        examples: [],
+        relatedComponents: [],
+        commonMistakes: [],
+        performanceNotes: [],
+        browserSupport: { chrome: true, firefox: true, safari: true, edge: true },
+        languageSupport: { javascript: true, python: true, java: true, csharp: true, php: true, ruby: true, go: true, rust: true, notes: {} },
+        tutorials: []
+      }
     }
 
     // Store custom component

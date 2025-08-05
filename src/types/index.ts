@@ -848,6 +848,14 @@ export interface ComponentTemplate {
   examples: ComponentExample[]
 }
 
+// Re-export enhanced regex component types
+export type {
+  EnhancedRegexComponent,
+  ComponentSearchOptions,
+  AISuggestion,
+  ValidationResult as EnhancedValidationResult
+} from './enhanced-regex-components'
+
 export interface ComponentRelationship {
   id: string
   parentId: string

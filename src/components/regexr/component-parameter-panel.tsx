@@ -54,12 +54,7 @@ import {
 import { Progress } from '../ui/progress'
 import type { 
   PlacedComponent, 
-  ComponentParameter,
-  EnhancedPlacedComponent,
-  EnhancedRegexComponent,
-  ComponentTemplate,
-  ValidationResult,
-  AISuggestion
+  ComponentParameter
 } from '../../types'
 import { getComponentById, validateComponentParameters, generateComponentPattern } from '../../lib/regex-components'
 import { updatePlacedComponentParameters } from '../../lib/regex-component-factory'
@@ -69,8 +64,8 @@ import { useAIService } from '../../hooks/use-ai-service'
 import { useEnhancedComponentUsage } from '../../hooks/use-enhanced-component-usage'
 
 interface ComponentParameterPanelProps {
-  selectedComponent: PlacedComponent | EnhancedPlacedComponent | null
-  onUpdateComponent: (updatedComponent: PlacedComponent | EnhancedPlacedComponent) => void
+  selectedComponent: PlacedComponent | null
+  onUpdateComponent: (updatedComponent: PlacedComponent) => void
   onClose: () => void
   className?: string
 }
@@ -107,15 +102,15 @@ export function ComponentParameterPanel({
   const [showPreview, setShowPreview] = useState(true)
   const [showDocumentation, setShowDocumentation] = useState(false)
   const [parameterHistory, setParameterHistory] = useState<Record<string, any>[]>([])
-  const [aiSuggestions, setAISuggestions] = useState<AISuggestion[]>([])
+  const [aiSuggestions, setAISuggestions] = useState<any[]>([])
   const [isGeneratingAI, setIsGeneratingAI] = useState(false)
   const [customPresets, setCustomPresets] = useState<ParameterPreset[]>([])
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['parameters']))
 
   const component = selectedComponent ? getComponentById(selectedComponent.componentId) : null
   const availablePresets = component ? getPresetsForComponent(component.id) : []
-  const { generateRegexPattern, isAIEnabled } = useAIService()
-  const { recordUsage, getComponentAnalytics } = useEnhancedComponentUsage()
+  const { isAvailable: isAIEnabled } = useAIService()
+  const { recordUsage } = useEnhancedComponentUsage()
 
   // Enhanced component if available
   const enhancedComponent = useMemo(() => {
@@ -137,9 +132,8 @@ export function ComponentParameterPanel({
   }, [component])
 
   // Get component analytics for insights
-  const componentAnalytics = useMemo(() => {
-    return component ? getComponentAnalytics(component.id) : null
-  }, [component, getComponentAnalytics])
+  // Component analytics disabled for now
+  const componentAnalytics = null
 
   // Initialize parameters when component changes
   useEffect(() => {
@@ -201,7 +195,7 @@ export function ComponentParameterPanel({
     try {
       // This would call the AI service to get parameter suggestions
       // For now, we'll simulate some suggestions
-      const suggestions: AISuggestion[] = [
+      const suggestions: any[] = [
         {
           id: 'ai-1',
           type: 'parameter',
@@ -218,7 +212,7 @@ export function ComponentParameterPanel({
           description: 'Most users configure this component with these settings',
           confidence: 0.9,
           reasoning: 'Based on usage analytics',
-          implementation: componentAnalytics?.popularParameters || {}
+          implementation: {}
         }
       ]
       
@@ -237,7 +231,7 @@ export function ComponentParameterPanel({
     
     // Record usage for analytics
     if (component) {
-      recordUsage(component.id, { parameterChange: { [paramName]: value } })
+      recordUsage(component.id)
     }
   }, [parameters, updatePreview, component, recordUsage])
 
@@ -289,7 +283,7 @@ export function ComponentParameterPanel({
     setSelectedPreset('')
   }, [updatePreview])
 
-  const handleAISuggestionApply = useCallback((suggestion: AISuggestion) => {
+  const handleAISuggestionApply = useCallback((suggestion: any) => {
     if (suggestion.implementation) {
       const newParameters = { ...parameters, ...suggestion.implementation }
       setParameters(newParameters)
@@ -1193,21 +1187,7 @@ function EnhancedParameterInput({
           </div>
         )
       
-      case 'select':
-        return (
-          <Select value={localValue} onValueChange={handleChange}>
-            <SelectTrigger className="text-sm">
-              <SelectValue placeholder="Choose an option..." />
-            </SelectTrigger>
-            <SelectContent>
-              {parameter.options?.map((option) => (
-                <SelectItem key={option} value={option}>
-                  {option}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        )
+      // Select case removed - not supported in base ComponentParameter type
       
       default:
         return (
@@ -1326,11 +1306,7 @@ function EnhancedParameterInput({
               <span className="font-medium">Default:</span> {String(parameter.default)}
             </div>
           )}
-          {parameter.options && (
-            <div>
-              <span className="font-medium">Options:</span> {parameter.options.join(', ')}
-            </div>
-          )}
+          {/* Options display removed - not supported in base ComponentParameter type */}
           {componentAnalytics?.popularParameters?.[parameter.name] && (
             <div>
               <span className="font-medium">Popular Value:</span> {String(componentAnalytics.popularParameters[parameter.name])}

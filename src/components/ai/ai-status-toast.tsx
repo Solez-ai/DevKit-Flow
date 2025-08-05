@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { toast } from '@/hooks/use-toast'
 import { useAIServiceStatus } from '@/hooks/use-ai-service'
 import { CheckCircle, AlertTriangle, XCircle, Wifi, WifiOff } from 'lucide-react'

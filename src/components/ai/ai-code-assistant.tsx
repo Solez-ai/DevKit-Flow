@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { 
@@ -30,9 +30,7 @@ import {
   RefreshCw,
   Sparkles,
   MessageSquare,
-  Settings,
-  ChevronDown,
-  ChevronUp
+  Settings
 } from 'lucide-react'
 import { useAIService } from '@/hooks/use-ai-service'
 import { useSessions } from '@/hooks/use-app-store'
@@ -224,7 +222,7 @@ export function AICodeAssistant({
       context.tags = currentSnippet.tags
     }
 
-    if (node?.content.codeSnippets.length > 0) {
+    if (node?.content?.codeSnippets && node.content.codeSnippets.length > 0) {
       context.relatedCode = node.content.codeSnippets.map(snippet => ({
         title: snippet.title,
         language: snippet.language,

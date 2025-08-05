@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -68,7 +68,7 @@ export function AIServiceRecovery({ onOpenSettings, className }: AIServiceRecove
   }
 
   const handleEnableFallback = () => {
-    enableFallbackMode('User requested offline mode')
+    enableFallbackMode()
     setAutoRetryEnabled(false)
   }
 
