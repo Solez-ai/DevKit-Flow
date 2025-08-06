@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { ThemeProvider } from '@/components/theme-provider'
 import { AppShell } from '@/components/layout/app-shell'
+import { OnboardingModal } from '@/components/onboarding/onboarding-modal'
 import { useTheme, useStorage, useAIConfig } from '@/hooks/use-app-store'
 import { useSettings } from '@/hooks/use-settings'
 import { Toaster } from '@/components/ui/toaster'
@@ -28,6 +29,7 @@ function App() {
       <Router>
         <div className="min-h-screen bg-background font-sans antialiased">
           <AppShell />
+          <OnboardingModal />
           <Toaster />
         </div>
       </Router>

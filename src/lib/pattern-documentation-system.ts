@@ -913,8 +913,9 @@ Helper methods for analysis and generation
   
   private async identifyCommonFailures(pattern: string, testCase: TestCase): Promise<CommonFailure[]> {
     return []
-  }  pr
-ivate analyzeTimeComplexity(pattern: string) {
+  }
+  
+  private analyzeTimeComplexity(pattern: string) {
     return patternDocumentationHelpers.analyzeTimeComplexity(pattern)
   }
   

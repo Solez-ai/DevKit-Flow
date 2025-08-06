@@ -152,8 +152,9 @@ export interface InteractiveHTMLOptions {
   offlineCapable: boolean
   customCSS?: string
   customJS?: string
-}/
-**
+}
+
+/**
  * Professional Export and Sharing System
  */
 export class ProfessionalExportSystem {

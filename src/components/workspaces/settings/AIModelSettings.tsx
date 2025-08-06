@@ -20,6 +20,7 @@ const availableModels: AIModel[] = [
     name: 'Kimi K2 (Free)',
     provider: 'Moonshot AI',
     description: 'Free tier with basic AI assistance',
+    logo: '🌙',
     isAvailable: true,
     requiresApiKey: false,
     features: ['Code assistance', 'Regex generation', 'Basic debugging'],
@@ -30,6 +31,7 @@ const availableModels: AIModel[] = [
     name: 'Kimi K2 (Premium)',
     provider: 'Moonshot AI',
     description: 'Premium tier with advanced features',
+    logo: '🌙',
     isAvailable: true,
     requiresApiKey: true,
     features: ['Advanced code assistance', 'Architecture planning', 'Code refactoring'],
@@ -40,6 +42,7 @@ const availableModels: AIModel[] = [
     name: 'GPT-4.1',
     provider: 'OpenAI',
     description: 'Latest GPT model with enhanced capabilities',
+    logo: '🤖',
     isAvailable: true,
     requiresApiKey: true,
     features: ['Advanced reasoning', 'Code generation', 'Complex problem solving'],
@@ -50,6 +53,7 @@ const availableModels: AIModel[] = [
     name: 'Qwen3 30B',
     provider: 'Alibaba',
     description: 'Large language model optimized for coding',
+    logo: '🔷',
     isAvailable: true,
     requiresApiKey: true,
     features: ['Code completion', 'Documentation', 'Code review'],
@@ -60,6 +64,7 @@ const availableModels: AIModel[] = [
     name: 'Claude Opus 4',
     provider: 'Anthropic',
     description: 'Advanced AI with strong reasoning capabilities',
+    logo: '🎭',
     isAvailable: true,
     requiresApiKey: true,
     features: ['Complex analysis', 'Code architecture', 'Advanced debugging'],
@@ -70,6 +75,7 @@ const availableModels: AIModel[] = [
     name: 'Grok 4',
     provider: 'xAI',
     description: 'Real-time AI with web access',
+    logo: '⚡',
     isAvailable: true,
     requiresApiKey: true,
     features: ['Real-time data', 'Web search', 'Current information'],
@@ -87,6 +93,12 @@ export const AIModelSettings: React.FC = () => {
 
   const handleModelSelect = (modelId: string) => {
     updateAIConfig({ selectedModel: modelId })
+  }
+
+  // Check model availability based on API key presence
+  const getModelAvailability = (model: AIModel) => {
+    if (!model.requiresApiKey) return true
+    return Boolean(aiConfig.customApiKey)
   }
 
   const handleApiKeySave = () => {
@@ -161,50 +173,75 @@ export const AIModelSettings: React.FC = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid gap-3">
-                {availableModels.map((model) => (
-                  <div
-                    key={model.id}
-                    className={`border rounded-lg p-4 cursor-pointer transition-colors ${
-                      aiConfig.selectedModel === model.id
-                        ? 'border-primary bg-primary/5'
-                        : 'border-border hover:border-primary/50'
-                    }`}
-                    onClick={() => handleModelSelect(model.id)}
-                  >
-                    <div className="flex items-start justify-between">
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2">
-                          <h4 className="font-medium">{model.name}</h4>
-                          <Badge 
-                            variant={model.pricing === 'free' ? 'secondary' : 'outline'}
-                            className="text-xs"
-                          >
-                            {model.pricing}
-                          </Badge>
-                          {model.requiresApiKey && (
-                            <Badge variant="outline" className="text-xs">
-                              <Key className="h-3 w-3 mr-1" />
-                              API Key
+                {availableModels.map((model) => {
+                  const isAvailable = getModelAvailability(model)
+                  return (
+                    <div
+                      key={model.id}
+                      className={`border rounded-lg p-4 transition-colors ${
+                        isAvailable 
+                          ? `cursor-pointer ${
+                              aiConfig.selectedModel === model.id
+                                ? 'border-primary bg-primary/5'
+                                : 'border-border hover:border-primary/50'
+                            }`
+                          : 'cursor-not-allowed opacity-60 border-muted'
+                      }`}
+                      onClick={() => isAvailable && handleModelSelect(model.id)}
+                    >
+                      <div className="flex items-start justify-between">
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            {model.logo && (
+                              <span className="text-lg">{model.logo}</span>
+                            )}
+                            <h4 className="font-medium">{model.name}</h4>
+                            <Badge 
+                              variant={model.pricing === 'free' ? 'secondary' : 'outline'}
+                              className="text-xs"
+                            >
+                              {model.pricing}
                             </Badge>
+                            {model.requiresApiKey && (
+                              <Badge 
+                                variant={isAvailable ? "outline" : "destructive"} 
+                                className="text-xs"
+                              >
+                                <Key className="h-3 w-3 mr-1" />
+                                {isAvailable ? "API Key" : "API Key Required"}
+                              </Badge>
+                            )}
+                            {!isAvailable && (
+                              <Badge variant="secondary" className="text-xs">
+                                Unavailable
+                              </Badge>
+                            )}
+                          </div>
+                          <p className="text-sm text-muted-foreground">
+                            {model.description}
+                          </p>
+                          <div className="flex flex-wrap gap-1 mt-2">
+                            {model.features.map((feature) => (
+                              <Badge key={feature} variant="secondary" className="text-xs">
+                                {feature}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                        <div className="flex flex-col items-end gap-2">
+                          {aiConfig.selectedModel === model.id && isAvailable && (
+                            <div className="h-4 w-4 rounded-full bg-primary" />
+                          )}
+                          {model.provider && (
+                            <div className="text-xs text-muted-foreground">
+                              {model.provider}
+                            </div>
                           )}
                         </div>
-                        <p className="text-sm text-muted-foreground">
-                          {model.description}
-                        </p>
-                        <div className="flex flex-wrap gap-1 mt-2">
-                          {model.features.map((feature) => (
-                            <Badge key={feature} variant="secondary" className="text-xs">
-                              {feature}
-                            </Badge>
-                          ))}
-                        </div>
                       </div>
-                      {aiConfig.selectedModel === model.id && (
-                        <div className="h-4 w-4 rounded-full bg-primary" />
-                      )}
                     </div>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
             </CardContent>
           </Card>
@@ -225,8 +262,8 @@ export const AIModelSettings: React.FC = () => {
                 <Alert>
                   <AlertTriangle className="h-4 w-4" />
                   <AlertDescription>
-                    Your API key is stored locally and never sent to our servers. 
-                    It's only used to communicate directly with the AI provider.
+                    <strong>Secure Storage:</strong> Your API key is encrypted and stored locally in your browser. 
+                    It's never transmitted to our servers and is only used for direct communication with {selectedModel.provider}.
                   </AlertDescription>
                 </Alert>
                 
@@ -254,22 +291,25 @@ export const AIModelSettings: React.FC = () => {
 
           {/* Advanced Settings */}
           <Collapsible open={showAdvanced} onOpenChange={setShowAdvanced}>
-            <Card>
+            <Card className="border-2 border-dashed border-muted-foreground/20">
               <CollapsibleTrigger asChild>
                 <CardHeader className="cursor-pointer hover:bg-muted/50 transition-colors">
                   <CardTitle className="flex items-center justify-between">
                     <span className="flex items-center gap-2">
-                      <Zap className="h-4 w-4" />
+                      <Zap className="h-4 w-4 text-orange-500" />
                       Advanced Settings
+                      <Badge variant="outline" className="text-xs">
+                        {showAdvanced ? 'Expanded' : 'Collapsed'}
+                      </Badge>
                     </span>
                     {showAdvanced ? (
-                      <ChevronDown className="h-4 w-4" />
+                      <ChevronDown className="h-4 w-4 text-primary" />
                     ) : (
-                      <ChevronRight className="h-4 w-4" />
+                      <ChevronRight className="h-4 w-4 text-muted-foreground" />
                     )}
                   </CardTitle>
                   <CardDescription>
-                    Configure rate limiting and advanced AI behavior
+                    Configure rate limiting, API behavior, and advanced AI settings
                   </CardDescription>
                 </CardHeader>
               </CollapsibleTrigger>
@@ -349,61 +389,162 @@ export const AIModelSettings: React.FC = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <BarChart3 className="h-4 w-4" />
-                Usage Statistics
+                Usage Analytics Dashboard
               </CardTitle>
               <CardDescription>
-                Monitor your AI usage and performance
+                Real-time monitoring of AI usage, performance, and rate limiting
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-6">
+              {/* Main Statistics Grid */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="space-y-1">
+                <div className="space-y-2">
                   <div className="text-2xl font-bold">
                     {aiConfig.usageStats.totalRequests}
                   </div>
                   <div className="text-sm text-muted-foreground">
                     Total Requests
                   </div>
+                  <Progress 
+                    value={(aiConfig.usageStats.totalRequests / 1000) * 100} 
+                    className="h-2" 
+                  />
                 </div>
                 
-                <div className="space-y-1">
+                <div className="space-y-2">
                   <div className="text-2xl font-bold text-green-600">
                     {aiConfig.usageStats.successfulRequests}
                   </div>
                   <div className="text-sm text-muted-foreground">
                     Successful
                   </div>
+                  <Progress 
+                    value={aiConfig.usageStats.totalRequests > 0 
+                      ? (aiConfig.usageStats.successfulRequests / aiConfig.usageStats.totalRequests) * 100 
+                      : 0
+                    } 
+                    className="h-2" 
+                  />
                 </div>
                 
-                <div className="space-y-1">
+                <div className="space-y-2">
                   <div className="text-2xl font-bold text-red-600">
                     {aiConfig.usageStats.failedRequests}
                   </div>
                   <div className="text-sm text-muted-foreground">
                     Failed
                   </div>
+                  <Progress 
+                    value={aiConfig.usageStats.totalRequests > 0 
+                      ? (aiConfig.usageStats.failedRequests / aiConfig.usageStats.totalRequests) * 100 
+                      : 0
+                    } 
+                    className="h-2" 
+                  />
                 </div>
                 
-                <div className="space-y-1">
+                <div className="space-y-2">
                   <div className="text-2xl font-bold">
                     {aiConfig.usageStats.averageResponseTime}ms
                   </div>
                   <div className="text-sm text-muted-foreground">
                     Avg Response
                   </div>
+                  <Progress 
+                    value={Math.min((aiConfig.usageStats.averageResponseTime / 5000) * 100, 100)} 
+                    className="h-2" 
+                  />
                 </div>
               </div>
               
               <Separator />
               
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span>Monthly Usage</span>
-                  <span>{Math.round(usagePercentage)}% of limit</span>
+              {/* Rate Limiting Status */}
+              <div className="space-y-4">
+                <h4 className="font-medium flex items-center gap-2">
+                  <Zap className="h-4 w-4" />
+                  Rate Limiting Status
+                </h4>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span>Current Rate Limit</span>
+                      <span>{aiConfig.rateLimiting.requestsPerMinute}/min</span>
+                    </div>
+                    <Progress 
+                      value={(aiConfig.rateLimiting.requestsPerMinute / 100) * 100} 
+                      className="w-full" 
+                    />
+                    <div className="text-xs text-muted-foreground">
+                      {aiConfig.rateLimiting.enabled ? 'Rate limiting enabled' : 'Rate limiting disabled'}
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span>Burst Allowance</span>
+                      <span>{aiConfig.rateLimiting.burstAllowance} requests</span>
+                    </div>
+                    <Progress 
+                      value={(aiConfig.rateLimiting.burstAllowance / 20) * 100} 
+                      className="w-full" 
+                    />
+                    <div className="text-xs text-muted-foreground">
+                      {aiConfig.rateLimiting.priorityQueue ? 'Priority queue enabled' : 'Priority queue disabled'}
+                    </div>
+                  </div>
                 </div>
-                <Progress value={usagePercentage} className="w-full" />
+              </div>
+              
+              <Separator />
+              
+              {/* Success Rate and Performance */}
+              <div className="space-y-4">
+                <h4 className="font-medium">Performance Metrics</h4>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span>Success Rate</span>
+                      <span>
+                        {aiConfig.usageStats.totalRequests > 0 
+                          ? Math.round((aiConfig.usageStats.successfulRequests / aiConfig.usageStats.totalRequests) * 100)
+                          : 0
+                        }%
+                      </span>
+                    </div>
+                    <Progress 
+                      value={aiConfig.usageStats.totalRequests > 0 
+                        ? (aiConfig.usageStats.successfulRequests / aiConfig.usageStats.totalRequests) * 100 
+                        : 0
+                      } 
+                      className="w-full" 
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span>Response Time</span>
+                      <span>{aiConfig.usageStats.averageResponseTime}ms</span>
+                    </div>
+                    <Progress 
+                      value={100 - Math.min((aiConfig.usageStats.averageResponseTime / 5000) * 100, 100)} 
+                      className="w-full" 
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span>Monthly Usage</span>
+                      <span>{Math.round(usagePercentage)}%</span>
+                    </div>
+                    <Progress value={usagePercentage} className="w-full" />
+                  </div>
+                </div>
+                
                 <div className="text-xs text-muted-foreground">
-                  Based on estimated monthly limits for your selected model
+                  Last updated: {new Date(aiConfig.usageStats.lastUsed).toLocaleString()}
                 </div>
               </div>
             </CardContent>
