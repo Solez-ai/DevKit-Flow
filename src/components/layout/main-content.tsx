@@ -1,7 +1,7 @@
 import { useWorkspace } from "@/hooks/use-app-store"
 import { StudioWorkspace } from "@/components/workspaces/studio-workspace"
 import { EnhancedRegexrWorkspace } from "@/components/workspaces/enhanced-regexr-workspace"
-import { SettingsWorkspace } from "@/components/workspaces/settings-workspace"
+import { SettingsWorkspace } from "@/components/workspaces/SettingsWorkspace"
 
 export function MainContent() {
   const { currentWorkspace } = useWorkspace()
