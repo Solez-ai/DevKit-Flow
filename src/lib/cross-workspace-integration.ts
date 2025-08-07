@@ -768,14 +768,19 @@ class PatternImportSystemImpl implements PatternImportSystem {
         todos: [],
         codeSnippets: [{
           id: `snippet-${Date.now()}`,
+          title: pattern.name,
           language: 'regex',
           code: pattern.regex,
-          description: 'Imported regex pattern'
+          description: 'Imported regex pattern',
+          isTemplate: false,
+          tags: ['regex', 'imported']
         }],
         references: [{
           id: `ref-${Date.now()}`,
           url: `#pattern-${pattern.id}`,
           title: 'Original Pattern',
+          type: 'internal',
+          importance: 'medium',
           description: 'Reference to the original regex pattern'
         }],
         comments: []
@@ -784,8 +789,7 @@ class PatternImportSystemImpl implements PatternImportSystem {
         createdAt: new Date(),
         updatedAt: new Date(),
         tags: ['regex', 'imported'],
-        complexity: 1,
-        priority: 'medium'
+        priority: 3
       }
     }
   }
@@ -854,14 +858,9 @@ class PatternImportSystemImpl implements PatternImportSystem {
           type: 'reference',
           label: 'Uses pattern',
           style: {
-            stroke: '#10b981',
+            strokeColor: '#10b981',
             strokeWidth: 2,
             strokeDasharray: '5,5'
-          },
-          metadata: {
-            createdAt: new Date(),
-            createdBy: 'system',
-            suggestion: true
           }
         })
       }

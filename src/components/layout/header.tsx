@@ -7,7 +7,9 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { useWorkspace, useSessions, useUIState } from "@/hooks/use-app-store"
 import { useTheme } from "@/components/theme-provider"
+import { useMobile } from "@/hooks/use-mobile"
 import { AIStatusIcon } from "@/components/ai"
+import { MobileNav } from "@/components/mobile"
 import { 
   Menu, 
   Settings, 
@@ -39,21 +41,32 @@ export function Header() {
   } = useUIState()
   
   const { setTheme } = useTheme()
+  const { isMobile } = useMobile()
   
   const currentSession = sessions.find(s => s.id === currentSessionId)
 
   return (
-    <header className="h-14 border-b bg-background flex items-center px-4 gap-4">
+    <header 
+      className="h-14 border-b bg-background flex items-center px-4 gap-4"
+      role="banner"
+      aria-label="Main navigation"
+    >
       {/* Left section */}
       <div className="flex items-center gap-4">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={toggleSidebar}
-          className="md:hidden"
-        >
-          <Menu className="h-4 w-4" />
-        </Button>
+        {isMobile ? (
+          <MobileNav />
+        ) : (
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleSidebar}
+            className="md:hidden"
+            aria-label="Toggle sidebar navigation"
+            aria-expanded={!_sidebarCollapsed}
+          >
+            <Menu className="h-4 w-4" />
+          </Button>
+        )}
         
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-2">
@@ -61,11 +74,12 @@ export function Header() {
             <span className="font-bold text-lg">DevKit Flow</span>
           </div>
           
-          <div className="hidden md:flex items-center ml-4">
+          <nav className="hidden md:flex items-center ml-4" aria-label="Workspace navigation">
             <Button
               variant={currentWorkspace === 'studio' ? 'default' : 'ghost'}
               size="sm"
               onClick={() => setCurrentWorkspace('studio')}
+              aria-current={currentWorkspace === 'studio' ? 'page' : undefined}
             >
               Studio
             </Button>
@@ -73,10 +87,11 @@ export function Header() {
               variant={currentWorkspace === 'regexr' ? 'default' : 'ghost'}
               size="sm"
               onClick={() => setCurrentWorkspace('regexr')}
+              aria-current={currentWorkspace === 'regexr' ? 'page' : undefined}
             >
               Regexr++
             </Button>
-          </div>
+          </nav>
         </div>
         
         {currentSession && (
@@ -109,14 +124,14 @@ export function Header() {
       </div>
 
       {/* Right section */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2" id="header-actions">
         <AIStatusIcon />
         
-        <Button variant="ghost" size="icon">
+        <Button variant="ghost" size="icon" aria-label="Import data">
           <Upload className="h-4 w-4" />
         </Button>
         
-        <Button variant="ghost" size="icon">
+        <Button variant="ghost" size="icon" aria-label="Export data">
           <Download className="h-4 w-4" />
         </Button>
         

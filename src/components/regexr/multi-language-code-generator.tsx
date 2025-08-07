@@ -267,7 +267,7 @@ is_valid = validator.validate('test input')`
     return {
       language: 'Python',
       framework: framework || undefined,
-      code: code.strip(),
+      code: code.trim(),
       explanation: `This Python implementation provides a comprehensive ${patternName.toLowerCase()} validator with type hints.`,
       examples: [
         {
@@ -323,7 +323,7 @@ boolean isValid = validator.validate("test input");`
     return {
       language: 'Java',
       framework: framework || undefined,
-      code: code.strip(),
+      code: code.trim(),
       explanation: `This Java implementation provides a robust ${patternName.toLowerCase()} validator with proper exception handling.`,
       examples: [
         {

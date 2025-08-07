@@ -12,6 +12,7 @@ import { AIModelSettings } from './settings/AIModelSettings'
 import { ThemeSettings } from './settings/ThemeSettings'
 import { KeyboardShortcuts } from './settings/KeyboardShortcuts'
 import { DataManagement } from './settings/DataManagement'
+import { AccessibilitySettings } from '@/components/accessibility/accessibility-settings'
 import { useToast } from '../../hooks/use-toast'
 
 export const SettingsWorkspace: React.FC = () => {
@@ -110,6 +111,8 @@ export const SettingsWorkspace: React.FC = () => {
         return <ThemeSettings />
       case 'behavior':
         return <KeyboardShortcuts />
+      case 'accessibility':
+        return <AccessibilitySettings />
       case 'data':
         return <DataManagement />
       case 'advanced':

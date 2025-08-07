@@ -12,7 +12,7 @@ import { Slider } from '../../ui/slider'
 import { Progress } from '../../ui/progress'
 import { Alert, AlertDescription } from '../../ui/alert'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../../ui/collapsible'
-import { AIModel } from '../../../types/settings'
+import type { AIModel } from '../../../types/settings'
 
 const availableModels: AIModel[] = [
   {

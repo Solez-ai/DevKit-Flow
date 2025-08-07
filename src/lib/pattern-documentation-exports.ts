@@ -7,7 +7,7 @@ import type {
   PatternDocumentation,
   ExportOptions,
   CustomStyling
-} from './pattern-documentation-system'
+} from './pattern-documentation-system-simple'
 
 export class PatternDocumentationExporter {
   

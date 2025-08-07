@@ -8,6 +8,7 @@ import {
   Archive, 
   HelpCircle,
   Save,
+  Database,
   AlertTriangle
 } from 'lucide-react'
 import { SettingsPanel } from './settings-panel'

@@ -29,7 +29,7 @@ import {
   type PatternDocumentation,
   type DocumentationGenerationOptions,
   type ExportOptions
-} from '../../lib/pattern-documentation-system'
+} from '../../lib/pattern-documentation-system-simple'
 import type { RegexPattern } from '../../types'
 
 interface PatternDocumentationPanelProps {
@@ -46,11 +46,9 @@ export function PatternDocumentationPanel({
   const [documentation, setDocumentation] = useState<PatternDocumentation | null>(null)
   const [isGenerating, setIsGenerating] = useState(false)
   const [generationOptions, setGenerationOptions] = useState<DocumentationGenerationOptions>({
-    useAI: true,
-    includeAdvancedAnalysis: true,
-    includePerformanceMetrics: true,
-    includeSecurityAnalysis: true,
-    generateVisualDiagrams: false
+    includeExamples: true,
+    includeTestCases: true,
+    includePerformance: true
   })
   const [activeTab, setActiveTab] = useState('overview')
 
@@ -65,7 +63,7 @@ export function PatternDocumentationPanel({
 
     setIsGenerating(true)
     try {
-      const doc = await patternDocumentationSystem.generatePatternDocumentation(
+      const doc = await patternDocumentationSystem.generateDocumentation(
         pattern,
         generationOptions
       )
@@ -85,20 +83,18 @@ export function PatternDocumentationPanel({
       includeTestCases: true,
       includePerformance: true,
       includeSecurity: true,
-      includeAIContent: generationOptions.useAI || false,
-      theme: 'light',
-      language: 'en'
+      includeAIContent: false,
+      format: format
     }
 
     try {
       const exportData = await patternDocumentationSystem.exportDocumentation(
         documentation,
-        format,
-        exportOptions
+        format
       )
 
       // Create download link
-      const blob = new Blob([exportData.content], { 
+      const blob = new Blob([exportData], { 
         type: format === 'html' ? 'text/html' : 
               format === 'json' ? 'application/json' : 
               'text/plain' 
@@ -305,7 +301,7 @@ function OverviewTab({ documentation }: { documentation: PatternDocumentation })
         </CardHeader>
         <CardContent>
           <div className="bg-muted p-4 rounded-lg font-mono text-lg">
-            {documentation.pattern}
+            {documentation.pattern.regex}
           </div>
         </CardContent>
       </Card>
@@ -693,28 +689,28 @@ function AIInsightsTab({ documentation }: { documentation: PatternDocumentation 
         </CardHeader>
         <CardContent>
           <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-lg mb-4">
-            <p className="text-lg">{documentation.aiExplanation.plainEnglish}</p>
+            <p className="text-lg">{documentation.aiExplanation?.plainEnglish}</p>
             <div className="text-xs text-muted-foreground mt-2">
-              Confidence: {Math.round(documentation.aiExplanation.confidence * 100)}%
+              Confidence: {Math.round((documentation.aiExplanation?.confidence || 0) * 100)}%
             </div>
           </div>
 
-          {documentation.aiExplanation.stepByStep.length > 0 && (
+          {(documentation.aiExplanation?.stepByStep?.length || 0) > 0 && (
             <div className="mb-4">
               <h4 className="font-semibold mb-2">Step-by-Step Breakdown</h4>
               <ol className="list-decimal list-inside space-y-1">
-                {documentation.aiExplanation.stepByStep.map((step, index) => (
+                {documentation.aiExplanation?.stepByStep?.map((step, index) => (
                   <li key={index} className="text-sm">{step}</li>
                 ))}
               </ol>
             </div>
           )}
 
-          {documentation.aiExplanation.analogies.length > 0 && (
+          {(documentation.aiExplanation?.analogies?.length || 0) > 0 && (
             <div>
               <h4 className="font-semibold mb-2">Analogies</h4>
               <ul className="list-disc list-inside space-y-1">
-                {documentation.aiExplanation.analogies.map((analogy, index) => (
+                {documentation.aiExplanation?.analogies?.map((analogy, index) => (
                   <li key={index} className="text-sm text-muted-foreground">{analogy}</li>
                 ))}
               </ul>
@@ -723,14 +719,14 @@ function AIInsightsTab({ documentation }: { documentation: PatternDocumentation 
         </CardContent>
       </Card>
 
-      {documentation.aiOptimizations.length > 0 && (
+      {(documentation.aiOptimizations?.length || 0) > 0 && (
         <Card>
           <CardHeader>
             <CardTitle>AI Optimization Suggestions</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {documentation.aiOptimizations.map((opt, index) => (
+              {documentation.aiOptimizations?.map((opt, index) => (
                 <div key={index} className="border rounded-lg p-4">
                   <div className="flex items-center gap-2 mb-2">
                     <Badge variant="outline">{opt.type}</Badge>
@@ -760,14 +756,14 @@ function AIInsightsTab({ documentation }: { documentation: PatternDocumentation 
         </Card>
       )}
 
-      {documentation.aiAlternatives.length > 0 && (
+      {(documentation.aiAlternatives?.length || 0) > 0 && (
         <Card>
           <CardHeader>
             <CardTitle>Alternative Patterns</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {documentation.aiAlternatives.map((alt, index) => (
+              {documentation.aiAlternatives?.map((alt, index) => (
                 <div key={index} className="border rounded-lg p-4">
                   <div className="flex items-center gap-2 mb-2">
                     <code className="bg-muted px-2 py-1 rounded">{alt.pattern}</code>

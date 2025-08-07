@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { 
+import type { 
   UserSettings, 
   SettingsPanel, 
   SettingsCategory, 
@@ -212,6 +212,56 @@ const settingsCategories: SettingsCategory[] = [
         description: 'Show developer tools and debug info',
         type: 'boolean',
         value: false
+      }
+    ]
+  },
+  {
+    id: 'accessibility',
+    name: 'Accessibility',
+    icon: 'Eye',
+    description: 'Accessibility and mobile support settings',
+    settings: [
+      {
+        key: 'highContrast',
+        label: 'High Contrast Mode',
+        description: 'Increases contrast for better visibility',
+        type: 'boolean',
+        value: false
+      },
+      {
+        key: 'reducedMotion',
+        label: 'Reduced Motion',
+        description: 'Minimizes animations and transitions',
+        type: 'boolean',
+        value: false
+      },
+      {
+        key: 'largeText',
+        label: 'Large Text',
+        description: 'Increases text size for better readability',
+        type: 'boolean',
+        value: false
+      },
+      {
+        key: 'screenReaderOptimized',
+        label: 'Screen Reader Optimization',
+        description: 'Optimizes interface for screen readers',
+        type: 'boolean',
+        value: false
+      },
+      {
+        key: 'keyboardNavigation',
+        label: 'Enhanced Keyboard Navigation',
+        description: 'Enables comprehensive keyboard shortcuts',
+        type: 'boolean',
+        value: true
+      },
+      {
+        key: 'focusIndicators',
+        label: 'Enhanced Focus Indicators',
+        description: 'Shows clear focus indicators for keyboard navigation',
+        type: 'boolean',
+        value: true
       }
     ]
   },

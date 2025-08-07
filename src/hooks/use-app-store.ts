@@ -69,6 +69,7 @@ export function useSessions() {
   const deleteSession = useAppStore((state) => state.deleteSession)
   const setCurrentSession = useAppStore((state) => state.setCurrentSession)
   const duplicateSession = useAppStore((state) => state.duplicateSession)
+  const loadSessions = useAppStore((state) => state.loadSessions)
   
   const currentSession = sessions.find(s => s.id === currentSessionId) || null
   
@@ -80,7 +81,8 @@ export function useSessions() {
     updateSession,
     deleteSession,
     setCurrentSession,
-    duplicateSession
+    duplicateSession,
+    loadSessions
   }
 }
 
@@ -195,12 +197,14 @@ export function useTemplates() {
   const addTemplate = useAppStore((state) => state.addTemplate)
   const updateTemplate = useAppStore((state) => state.updateTemplate)
   const deleteTemplate = useAppStore((state) => state.deleteTemplate)
+  const loadTemplates = useAppStore((state) => state.loadTemplates)
   
   return {
     sessionTemplates,
     addTemplate,
     updateTemplate,
-    deleteTemplate
+    deleteTemplate,
+    loadTemplates
   }
 }
 

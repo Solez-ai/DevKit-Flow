@@ -5,10 +5,10 @@
 
 import type { 
   DevFlowSession, 
-  RegexPattern,
-  PatternDocumentation 
+  RegexPattern
 } from '../types'
-import { patternDocumentationSystem } from './pattern-documentation-system'
+import type { PatternDocumentation } from './pattern-documentation-system-simple'
+import { patternDocumentationSystem } from './pattern-documentation-system-simple'
 
 export interface ExportConfiguration {
   format: 'pdf' | 'png' | 'html' | 'json' | 'zip' | 'markdown'
@@ -235,11 +235,10 @@ export class ProfessionalExportSystem {
     
     let documentation: PatternDocumentation | undefined
     if (includeDocumentation) {
-      documentation = await patternDocumentationSystem.generatePatternDocumentation(pattern, {
-        useAI: true,
-        includeAdvancedAnalysis: true,
-        includePerformanceMetrics: true,
-        includeSecurityAnalysis: true
+      documentation = await patternDocumentationSystem.generateDocumentation(pattern, {
+        includeExamples: true,
+        includeTestCases: true,
+        includePerformance: true
       })
     }
     
@@ -256,7 +255,7 @@ export class ProfessionalExportSystem {
         content = this.exportPatternToJSON(pattern, documentation, configuration)
         break
       case 'markdown':
-        content = this.exportPatternToMarkdown(pattern, documentation, configuration)
+        content = await this.exportPatternToMarkdown(pattern, documentation, configuration)
         break
       default:
         throw new Error(`Unsupported pattern export format: ${configuration.format}`)
@@ -538,19 +537,7 @@ export class ProfessionalExportSystem {
   ): Promise<string> {
     if (documentation) {
       // Use the documentation system's HTML export
-      return await patternDocumentationSystem.exportDocumentation(
-        documentation,
-        'html',
-        {
-          includeExamples: true,
-          includeTestCases: true,
-          includePerformance: true,
-          includeSecurity: true,
-          includeAIContent: true,
-          theme: config.theme || 'light',
-          language: 'en'
-        }
-      ).then(result => result.content)
+      return await patternDocumentationSystem.exportDocumentation(documentation, 'html')
     }
     
     // Basic HTML export without documentation
@@ -582,26 +569,18 @@ export class ProfessionalExportSystem {
     return JSON.stringify(exportData, null, 2)
   }
   
-  private exportPatternToMarkdown(
+  private async exportPatternToMarkdown(
     pattern: RegexPattern,
     documentation: PatternDocumentation | undefined,
     config: ExportConfiguration
-  ): string {
+  ): Promise<string> {
     if (documentation) {
       // Use the documentation system's Markdown export
-      return patternDocumentationSystem.exportDocumentation(
-        documentation,
-        'markdown',
-        {
-          includeExamples: true,
-          includeTestCases: true,
-          includePerformance: true,
-          includeSecurity: true,
-          includeAIContent: true,
-          theme: config.theme || 'light',
-          language: 'en'
-        }
-      ).then(result => result.content).catch(() => this.generateBasicPatternMarkdown(pattern))
+      try {
+        return await patternDocumentationSystem.exportDocumentation(documentation, 'markdown')
+      } catch (error) {
+        return this.generateBasicPatternMarkdown(pattern)
+      }
     }
     
     return this.generateBasicPatternMarkdown(pattern)

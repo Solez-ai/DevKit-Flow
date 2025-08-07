@@ -58,6 +58,13 @@ class StorageManager {
   }
 
   /**
+   * Initialize the storage manager (alias for init() for compatibility)
+   */
+  async initialize(): Promise<void> {
+    return this.init()
+  }
+
+  /**
    * Save data to storage
    */
   async save<T>(

@@ -4,25 +4,21 @@
  */
 
 import type { 
-  RegexPattern, 
-  TestCase,
+  PatternDocumentation,
+  ExportOptions,
+  DocumentationGenerationOptions,
+  DocumentationMetadata,
   PerformanceBenchmark,
-  PerformanceAlternative,
   SecurityVulnerability,
   SecurityMitigation,
   LanguageCompatibility,
   BrowserCompatibility,
-  EngineCompatibility,
   TroubleshootingIssue,
   FAQItem,
   AIPatternExplanation,
-  AIOptimizationSuggestion,
-  AIAlternativePattern,
-  DocumentationMetadata,
-  DocumentationGenerationOptions,
-  PatternDocumentation,
-  ExportOptions
-} from './pattern-documentation-system'
+  AIOptimizationSuggestion
+} from './pattern-documentation-system-simple'
+import type { RegexPattern, TestCase } from '@/types'
 
 export class PatternDocumentationHelpers {
   
@@ -96,9 +92,9 @@ export class PatternDocumentationHelpers {
       const memoryUsage = this.estimateMemoryUsage(pattern, size)
       
       benchmarks.push({
-        inputSize: size,
-        executionTime,
-        memoryUsage,
+        inputSize: size.toString(),
+        executionTime: executionTime.toString(),
+        memoryUsage: memoryUsage.toString(),
         testDescription: `Performance test with ${size} character input`
       })
     }
@@ -106,8 +102,8 @@ export class PatternDocumentationHelpers {
     return benchmarks
   }
   
-  async findPerformanceAlternatives(pattern: string): Promise<PerformanceAlternative[]> {
-    const alternatives: PerformanceAlternative[] = []
+  async findPerformanceAlternatives(pattern: string): Promise<any[]> {
+    const alternatives: any[] = []
     
     // Suggest alternatives based on pattern analysis
     if (pattern.includes('.*')) {
@@ -139,6 +135,7 @@ export class PatternDocumentationHelpers {
       vulnerabilities.push({
         type: 'redos',
         description: 'Potential Regular Expression Denial of Service (ReDoS) vulnerability due to catastrophic backtracking',
+        severity: 'high',
         example: 'Input like "aaaaaaaaaaaaaaaaaaaaaaaaaaaa!" could cause exponential backtracking',
         impact: 'Application could become unresponsive, leading to denial of service',
         likelihood: 'high'
@@ -150,6 +147,7 @@ export class PatternDocumentationHelpers {
       vulnerabilities.push({
         type: 'bypass',
         description: 'Overly permissive pattern that may allow unintended input',
+        severity: 'medium',
         example: 'Pattern matches any input, potentially bypassing validation',
         impact: 'Security controls may be bypassed',
         likelihood: 'medium'
@@ -161,6 +159,7 @@ export class PatternDocumentationHelpers {
       vulnerabilities.push({
         type: 'information-disclosure',
         description: 'Lookahead with greedy quantifiers may reveal information about input structure',
+        severity: 'low',
         example: 'Pattern behavior may leak information about input format',
         impact: 'Potential information disclosure through timing attacks',
         likelihood: 'low'
@@ -234,13 +233,13 @@ export class PatternDocumentationHelpers {
   
   analyzeLanguageCompatibility(pattern: string): LanguageCompatibility[] {
     const compatibility: LanguageCompatibility[] = [
-      { language: 'JavaScript', supported: true, version: 'ES2015+' },
-      { language: 'Python', supported: true, version: '3.0+' },
-      { language: 'Java', supported: true, version: '8+' },
-      { language: 'C#', supported: true, version: '.NET 4.0+' },
-      { language: 'PHP', supported: true, version: '7.0+' },
-      { language: 'Ruby', supported: true, version: '2.0+' },
-      { language: 'Go', supported: true, version: '1.0+' }
+      { name: 'JavaScript', language: 'JavaScript', supported: true, version: 'ES2015+' },
+      { name: 'Python', language: 'Python', supported: true, version: '3.0+' },
+      { name: 'Java', language: 'Java', supported: true, version: '8+' },
+      { name: 'C#', language: 'C#', supported: true, version: '.NET 4.0+' },
+      { name: 'PHP', language: 'PHP', supported: true, version: '7.0+' },
+      { name: 'Ruby', language: 'Ruby', supported: true, version: '2.0+' },
+      { name: 'Go', language: 'Go', supported: true, version: '1.0+' }
     ]
     
     // Check for features that may not be supported everywhere
@@ -265,10 +264,10 @@ export class PatternDocumentationHelpers {
   
   analyzeBrowserCompatibility(pattern: string): BrowserCompatibility[] {
     const compatibility: BrowserCompatibility[] = [
-      { browser: 'Chrome', supported: true, version: '50+' },
-      { browser: 'Firefox', supported: true, version: '40+' },
-      { browser: 'Safari', supported: true, version: '10+' },
-      { browser: 'Edge', supported: true, version: '12+' }
+      { name: 'Chrome', browser: 'Chrome', supported: true, version: '50+' },
+      { name: 'Firefox', browser: 'Firefox', supported: true, version: '40+' },
+      { name: 'Safari', browser: 'Safari', supported: true, version: '10+' },
+      { name: 'Edge', browser: 'Edge', supported: true, version: '12+' }
     ]
     
     // Adjust for specific features
@@ -294,7 +293,7 @@ export class PatternDocumentationHelpers {
     return compatibility
   }
   
-  analyzeEngineCompatibility(pattern: string): EngineCompatibility[] {
+  analyzeEngineCompatibility(pattern: string): any[] {
     return [
       {
         engine: 'V8 (Chrome/Node.js)',

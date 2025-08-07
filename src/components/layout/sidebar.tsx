@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useWorkspace, useSessions, useUIState, usePatterns } from "@/hooks/use-app-store"
+import { useMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 import { 
   Plus, 
@@ -19,15 +20,33 @@ import {
 export function Sidebar() {
   const { currentWorkspace } = useWorkspace()
   const { sidebarCollapsed } = useUIState()
+  const { isMobile, isTablet } = useMobile()
   // const { sessions, currentSessionId } = useSessions()
   // const { patterns, currentPatternId } = usePatterns()
 
-  if (sidebarCollapsed) {
+  if (sidebarCollapsed && !isMobile) {
     return null
   }
 
+  // On mobile, sidebar is hidden by default and shown as overlay when needed
+  if (isMobile && sidebarCollapsed) {
+    return null
+  }
+
+  const sidebarWidth = isMobile ? "w-full" : isTablet ? "w-48" : "w-80"
+
   return (
-    <aside className="w-80 border-r bg-muted/50 flex flex-col">
+    <aside 
+      className={cn(
+        "border-r bg-muted/50 flex flex-col",
+        sidebarWidth,
+        // Mobile overlay
+        isMobile && "absolute top-0 left-0 h-full z-40 shadow-lg"
+      )}
+      role="navigation"
+      aria-label="Sidebar navigation"
+      id="sidebar-navigation"
+    >
       {currentWorkspace === 'studio' && <StudioSidebar />}
       {currentWorkspace === 'regexr' && <RegexrSidebar />}
       {currentWorkspace === 'settings' && <SettingsSidebar />}
@@ -46,25 +65,50 @@ function StudioSidebar() {
         <CardHeader className="pb-3">
           <CardTitle className="text-sm">Node Palette</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-2">
-          <Button variant="outline" size="sm" className="w-full justify-start">
-            <FileText className="h-4 w-4 mr-2" />
+        <CardContent className="space-y-2" role="group" aria-label="Node creation tools">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="w-full justify-start"
+            aria-label="Create task node"
+          >
+            <FileText className="h-4 w-4 mr-2" aria-hidden="true" />
             Task Node
           </Button>
-          <Button variant="outline" size="sm" className="w-full justify-start">
-            <Code className="h-4 w-4 mr-2" />
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="w-full justify-start"
+            aria-label="Create code node"
+          >
+            <Code className="h-4 w-4 mr-2" aria-hidden="true" />
             Code Node
           </Button>
-          <Button variant="outline" size="sm" className="w-full justify-start">
-            <Link className="h-4 w-4 mr-2" />
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="w-full justify-start"
+            aria-label="Create reference node"
+          >
+            <Link className="h-4 w-4 mr-2" aria-hidden="true" />
             Reference Node
           </Button>
-          <Button variant="outline" size="sm" className="w-full justify-start">
-            <MessageSquare className="h-4 w-4 mr-2" />
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="w-full justify-start"
+            aria-label="Create comment node"
+          >
+            <MessageSquare className="h-4 w-4 mr-2" aria-hidden="true" />
             Comment Node
           </Button>
-          <Button variant="outline" size="sm" className="w-full justify-start">
-            <File className="h-4 w-4 mr-2" />
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="w-full justify-start"
+            aria-label="Create template node"
+          >
+            <File className="h-4 w-4 mr-2" aria-hidden="true" />
             Template Node
           </Button>
         </CardContent>

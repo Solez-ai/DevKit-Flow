@@ -78,7 +78,7 @@ export function PerformanceSecurityAnalyzer({
 
   // Analyze pattern performance
   const analyzePerformance = useCallback((regex: string, input: string): PerformanceMetrics => {
-    const startTime = performance.now()
+    const startTime = window.performance.now()
     let backtrackingSteps = 0
     let memoryUsage = 0
 
@@ -91,7 +91,7 @@ export function PerformanceSecurityAnalyzer({
         regexObj.test(input)
       }
 
-      const executionTime = (performance.now() - startTime) / iterations
+      const executionTime = (window.performance.now() - startTime) / iterations
 
       // Estimate complexity based on pattern structure
       const complexityFactors = [

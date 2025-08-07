@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -428,9 +428,9 @@ export const OnboardingModal: React.FC = () => {
           <div className="flex items-center justify-between">
             <div>
               <DialogTitle>{currentStep.title}</DialogTitle>
-              <p className="text-sm text-muted-foreground mt-1">
+              <DialogDescription>
                 {currentStep.description}
-              </p>
+              </DialogDescription>
             </div>
             <Badge variant="secondary">
               {currentStepIndex + 1} of {steps.length}

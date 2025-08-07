@@ -6,8 +6,23 @@ import { SettingsWorkspace } from "@/components/workspaces/SettingsWorkspace"
 export function MainContent() {
   const { currentWorkspace } = useWorkspace()
 
+  const getWorkspaceLabel = () => {
+    switch (currentWorkspace) {
+      case 'studio': return 'DevFlow Studio workspace'
+      case 'regexr': return 'Regexr++ workspace'
+      case 'settings': return 'Settings workspace'
+      default: return 'Main workspace'
+    }
+  }
+
   return (
-    <main className="flex-1 flex flex-col overflow-hidden bg-background">
+    <main 
+      className="flex-1 flex flex-col overflow-hidden bg-background"
+      role="main"
+      aria-label={getWorkspaceLabel()}
+      id="main-content"
+      tabIndex={-1}
+    >
       {currentWorkspace === 'studio' && <StudioWorkspace />}
       {currentWorkspace === 'regexr' && <EnhancedRegexrWorkspace />}
       {currentWorkspace === 'settings' && <SettingsWorkspace />}

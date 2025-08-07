@@ -6,7 +6,7 @@ import { Badge } from '../ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs'
 import { ScrollArea } from '../ui/scroll-area'
 import { Separator } from '../ui/separator'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog'
 import { Textarea } from '../ui/textarea'
 import { Label } from '../ui/label'
 import { Switch } from '../ui/switch'
@@ -426,6 +426,9 @@ export function PatternLibrarySystem({
                 <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
                   <DialogHeader>
                     <DialogTitle>Add New Pattern</DialogTitle>
+                    <DialogDescription>
+                      Create a new regex pattern to add to your library.
+                    </DialogDescription>
                   </DialogHeader>
                   <div className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -678,6 +681,9 @@ export function PatternLibrarySystem({
                               <DialogContent className="max-w-2xl">
                                 <DialogHeader>
                                   <DialogTitle>{pattern.name}</DialogTitle>
+                                  <DialogDescription>
+                                    View pattern details and usage information.
+                                  </DialogDescription>
                                 </DialogHeader>
                                 <div className="space-y-4">
                                   <div>

@@ -6,6 +6,7 @@ import {
   Zap, 
   Database, 
   Cog,
+  Eye,
   ChevronRight
 } from 'lucide-react'
 import { useSettingsStore } from '../../../store/settings-store'
@@ -18,6 +19,7 @@ const categoryIcons = {
   ai: Bot,
   appearance: Palette,
   behavior: Zap,
+  accessibility: Eye,
   data: Database,
   advanced: Cog
 }

@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useSessions, useUIState, useNodes } from "@/hooks/use-app-store"
 import { generateId } from "@/lib/utils"
@@ -352,6 +352,9 @@ export function StudioWorkspace() {
             <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle>Smart Git Commit Generator</DialogTitle>
+                <DialogDescription>
+                  Generate conventional commit messages based on your completed tasks and changes.
+                </DialogDescription>
               </DialogHeader>
               <CommitGenerator />
             </DialogContent>
