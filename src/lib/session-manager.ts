@@ -61,6 +61,13 @@ class SessionManager {
   }
 
   /**
+   * Initialize the session manager (alias for init)
+   */
+  async initialize(): Promise<void> {
+    return this.init()
+  }
+
+  /**
    * Create a new session
    */
   async createSession(

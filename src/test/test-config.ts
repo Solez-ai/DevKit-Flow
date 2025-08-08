@@ -3,9 +3,9 @@
  * Centralized configuration for AI-enhanced testing
  */
 
-import { TestRunConfiguration } from './TestSuiteRunner';
-import { PerformanceThresholds } from './utils/performance-tester';
-import { AccessibilityTestOptions } from './utils/accessibility-tester';
+import type { TestRunConfiguration } from './TestSuiteRunner';
+import type { PerformanceThresholds } from './utils/performance-tester';
+import type { AccessibilityTestOptions } from './utils/accessibility-tester';
 
 export const DEFAULT_TEST_CONFIG: TestRunConfiguration = {
   includeUnitTests: true,

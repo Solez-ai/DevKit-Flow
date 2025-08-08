@@ -4,7 +4,7 @@
  */
 
 import React, { useCallback, useRef, useEffect } from 'react';
-import { DevFlowNode } from '../../types';
+import type { DevFlowNode } from '../../types';
 import { useVirtualRendering } from '../../lib/virtual-rendering';
 import { NodeComponent } from '../nodes/NodeComponent';
 import { cn } from '../../lib/utils';
@@ -88,7 +88,7 @@ export const VirtualNodeList: React.FC<VirtualNodeListProps> = ({
                 node={node}
                 isSelected={isSelected}
                 onSelect={() => handleNodeSelect(node.id)}
-                onUpdate={(updates) => handleNodeUpdate(node.id, updates)}
+                onUpdate={(updates: any) => handleNodeUpdate(node.id, updates)}
                 compact={true}
               />
             </div>

@@ -59,6 +59,13 @@ class ExportImportManager {
   }
 
   /**
+   * Initialize the export/import manager (alias for init)
+   */
+  async initialize(): Promise<void> {
+    return this.init()
+  }
+
+  /**
    * Export sessions to JSON
    */
   async exportSessionsToJSON(

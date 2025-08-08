@@ -206,7 +206,7 @@ export const InteractiveTutorials: React.FC<InteractiveTutorialsProps> = ({
   const [aiInsights, setAiInsights] = useState<string>('');
 
   const { generateResponse, isEnabled: aiEnabled } = useAIService();
-  const highlightTimeoutRef = useRef<NodeJS.Timeout>();
+  const highlightTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Generate AI-personalized tutorials based on user preferences and progress
   const generatePersonalizedTutorials = useCallback(async () => {

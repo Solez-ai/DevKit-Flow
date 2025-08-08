@@ -452,16 +452,45 @@ function StylingTab({
   theme: string
 }) {
   const updateColors = (colors: Partial<any>) => {
+    const defaultColors = {
+      primary: '#000000',
+      secondary: '#666666',
+      accent: '#0066cc',
+      background: '#ffffff',
+      surface: '#f8f9fa',
+      text: '#000000',
+      textSecondary: '#666666',
+      border: '#e0e0e0',
+      success: '#28a745',
+      warning: '#ffc107',
+      error: '#dc3545'
+    };
+    
     onChange({
       ...styling,
-      colors: { ...styling.colors, ...colors }
+      colors: { ...defaultColors, ...styling.colors, ...colors }
     })
   }
 
   const updateFonts = (fonts: Partial<any>) => {
+    const defaultFonts = {
+      heading: 'Inter, sans-serif',
+      body: 'Inter, sans-serif',
+      code: 'JetBrains Mono, monospace',
+      sizes: {
+        xs: '0.75rem',
+        sm: '0.875rem',
+        base: '1rem',
+        lg: '1.125rem',
+        xl: '1.25rem',
+        '2xl': '1.5rem',
+        '3xl': '1.875rem'
+      }
+    };
+    
     onChange({
       ...styling,
-      fonts: { ...styling.fonts, ...fonts }
+      fonts: { ...defaultFonts, ...styling.fonts, ...fonts }
     })
   }
 

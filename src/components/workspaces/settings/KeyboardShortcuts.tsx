@@ -493,7 +493,7 @@ export const KeyboardShortcuts: React.FC = () => {
                         <div key={action} className="flex justify-between">
                           <span className="capitalize">{action.replace('-', ' ')}</span>
                           <div className="flex items-center gap-1">
-                            {keys.map((key, index) => (
+                            {keys.map((key: string, index: number) => (
                               <React.Fragment key={index}>
                                 <Badge variant="outline" className="text-xs font-mono">
                                   {key}
@@ -554,7 +554,7 @@ export const KeyboardShortcuts: React.FC = () => {
                         <div key={action} className="flex justify-between">
                           <span className="capitalize">{action.replace('-', ' ')}</span>
                           <div className="flex items-center gap-1">
-                            {keys.map((key, index) => (
+                            {keys.map((key: string, index: number) => (
                               <React.Fragment key={index}>
                                 <Badge variant="outline" className="text-xs font-mono">
                                   {key}

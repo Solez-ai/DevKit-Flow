@@ -4,10 +4,11 @@
  */
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { DevFlowNode } from '../../types';
+import type { DevFlowNode } from '../../types';
 import { useVirtualRendering } from '../../lib/virtual-rendering';
 import { useSmartLazyLoading } from '../../lib/smart-lazy-loading';
-import { usePerformanceMonitor, PerformanceAlert } from '../../lib/performance-monitor';
+import { usePerformanceMonitor } from '../../lib/performance-monitor';
+import type { PerformanceAlert } from '../../lib/performance-monitor';
 import { NodeComponent } from '../nodes/NodeComponent';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
@@ -20,7 +21,7 @@ import {
   Zap, 
   Settings, 
   TrendingUp,
-  Memory,
+  HardDrive as Memory,
   Clock
 } from 'lucide-react';
 
@@ -154,7 +155,7 @@ export const AdvancedVirtualCanvas: React.FC<AdvancedVirtualCanvasProps> = ({
             node={node}
             isSelected={isSelected}
             onSelect={() => handleNodeSelect(node.id)}
-            onUpdate={(updates) => handleNodeUpdate(node.id, updates)}
+            onUpdate={(updates: any) => handleNodeUpdate(node.id, updates)}
             compact={true}
           />
         ) : loading ? (
@@ -217,7 +218,7 @@ export const AdvancedVirtualCanvas: React.FC<AdvancedVirtualCanvasProps> = ({
           <div className="flex items-center justify-between text-xs">
             <span>Cache Hit Rate</span>
             <span className="text-green-500">
-              {(currentMetrics.cacheHitRate * 100).toFixed(0)}%
+              {((currentMetrics.cacheHitRate || 0) * 100).toFixed(0)}%
             </span>
           </div>
         </div>
@@ -231,7 +232,7 @@ export const AdvancedVirtualCanvas: React.FC<AdvancedVirtualCanvasProps> = ({
 
     return (
       <div className="absolute top-4 left-4 space-y-2 max-w-sm">
-        {alerts.slice(0, 3).map((alert, index) => (
+        {alerts.slice(0, 3).map((alert: any, index: number) => (
           <Alert key={index} variant={alert.type === 'error' ? 'destructive' : 'default'}>
             <AlertTriangle className="h-4 w-4" />
             <AlertDescription className="text-sm">

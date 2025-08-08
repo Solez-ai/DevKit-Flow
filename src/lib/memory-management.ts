@@ -3,6 +3,8 @@
  * Intelligent memory cleanup and optimization for virtual rendering
  */
 
+import React from 'react';
+
 export interface MemoryStats {
   usedJSHeapSize: number;
   totalJSHeapSize: number;
@@ -318,7 +320,7 @@ export class MemoryManager {
   /**
    * Perform gentle cleanup
    */
-  private async performGentleCleanup(): void {
+  private async performGentleCleanup(): Promise<void> {
     const strategy = this.cleanupStrategies.find(s => s.aggressiveness === 'low');
     if (strategy) {
       const freed = await strategy.execute();
@@ -329,7 +331,7 @@ export class MemoryManager {
   /**
    * Perform aggressive cleanup
    */
-  private async performAggressiveCleanup(): void {
+  private async performAggressiveCleanup(): Promise<void> {
     const strategies = this.cleanupStrategies.filter(s => 
       s.aggressiveness === 'low' || s.aggressiveness === 'medium'
     );
@@ -346,7 +348,7 @@ export class MemoryManager {
   /**
    * Perform emergency cleanup
    */
-  private async performEmergencyCleanup(): void {
+  private async performEmergencyCleanup(): Promise<void> {
     let totalFreed = 0;
     
     for (const strategy of this.cleanupStrategies) {
@@ -506,7 +508,7 @@ export class MemoryManager {
  * React hook for memory management
  */
 export function useMemoryManager(thresholds?: Partial<MemoryThresholds>) {
-  const managerRef = React.useRef<MemoryManager>();
+  const managerRef = React.useRef<MemoryManager | null>(null);
   const [memoryStats, setMemoryStats] = React.useState<MemoryStats | null>(null);
   const [memoryTrend, setMemoryTrend] = React.useState<'increasing' | 'decreasing' | 'stable'>('stable');
 

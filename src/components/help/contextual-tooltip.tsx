@@ -49,7 +49,7 @@ export const ContextualTooltip: React.FC<ContextualTooltipProps> = ({
   const [isLoadingAI, setIsLoadingAI] = useState(false);
   const [hasLoadedAI, setHasLoadedAI] = useState(false);
   const { generateResponse, isEnabled: aiEnabled } = useAIService();
-  const timeoutRef = useRef<NodeJS.Timeout>();
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Generate AI-powered suggestions for the feature
   const generateAISuggestions = useCallback(async () => {

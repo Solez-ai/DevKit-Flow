@@ -4,7 +4,7 @@
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { DevFlowNode, RegexPattern } from '../types';
+import type { DevFlowNode, RegexPattern } from '../types';
 
 export interface VirtualRenderingConfig {
   itemHeight: number;
@@ -259,7 +259,7 @@ export function useVirtualRendering<T>(
   };
 
   const finalConfig = { ...defaultConfig, ...config };
-  const engineRef = useRef<VirtualRenderingEngine<T>>();
+  const engineRef = useRef<VirtualRenderingEngine<T> | null>(null);
   const [visibleItems, setVisibleItems] = useState<VirtualItem<T>[]>([]);
   const [totalHeight, setTotalHeight] = useState(0);
 

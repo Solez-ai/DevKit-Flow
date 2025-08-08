@@ -3,7 +3,8 @@
  */
 
 import { useEffect, useState, useCallback, useRef } from 'react';
-import { WorkerManager, WorkerManagerConfig, ProgressCallback } from '../lib/workers/WorkerManager';
+import { WorkerManager } from '../lib/workers/WorkerManager';
+import type { WorkerManagerConfig, ProgressCallback } from '../lib/workers/WorkerManager';
 
 // Global worker manager instance
 let globalWorkerManager: WorkerManager | null = null;
@@ -421,7 +422,7 @@ export function useWorkerHealth() {
     } catch (error) {
       setHealthStatus({
         healthy: false,
-        issues: [`Health check failed: ${error.message}`],
+        issues: [`Health check failed: ${(error as Error).message}`],
         pools: { regex: false, ai: false, analysis: false }
       });
     } finally {

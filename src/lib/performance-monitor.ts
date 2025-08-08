@@ -10,6 +10,8 @@ interface PerformanceMetrics {
   errorCount: number;
   userInteractions: number;
   lastUpdated: Date;
+  itemsRendered?: number;
+  cacheHitRate?: number;
 }
 
 class PerformanceMonitor {
@@ -19,7 +21,9 @@ class PerformanceMonitor {
     loadTime: 0,
     errorCount: 0,
     userInteractions: 0,
-    lastUpdated: new Date()
+    lastUpdated: new Date(),
+    itemsRendered: 0,
+    cacheHitRate: 0
   };
 
   private observers: PerformanceObserver[] = [];
@@ -62,7 +66,7 @@ class PerformanceMonitor {
     if ('performance' in window && 'getEntriesByType' in performance) {
       const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
       if (navigation) {
-        this.metrics.loadTime = navigation.loadEventEnd - navigation.navigationStart;
+        this.metrics.loadTime = navigation.loadEventEnd - (navigation as any).navigationStart;
       }
     }
   }
@@ -153,3 +157,21 @@ export const performanceMonitor = new PerformanceMonitor();
 
 // Also export as default for compatibility
 export default performanceMonitor;
+
+// Hook for using performance monitor in components
+export const usePerformanceMonitor = (config?: any) => {
+  return {
+    currentMetrics: performanceMonitor.getMetrics(),
+    alerts: [] as PerformanceAlert[],
+    generateReport: () => performanceMonitor.getOptimizationSuggestions()
+  };
+};
+
+// Performance alert interface
+export interface PerformanceAlert {
+  id: string;
+  type: 'warning' | 'error' | 'info';
+  message: string;
+  timestamp: Date;
+  severity: 'low' | 'medium' | 'high';
+}

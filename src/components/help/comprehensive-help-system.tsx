@@ -166,7 +166,7 @@ export const ComprehensiveHelpSystem: React.FC<ComprehensiveHelpSystemProps> = (
           </DialogHeader>
 
           <div className="flex-1 overflow-hidden">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
+            <Tabs value={activeTab} onValueChange={(value: string) => setActiveTab(value as any)} className="h-full flex flex-col">
               <TabsList className={`grid w-full ${isMobile ? 'grid-cols-3' : 'grid-cols-5'} mx-6 mt-4`}>
                 <TabsTrigger value="help" className="flex items-center gap-2">
                   {getTabIcon('help')}

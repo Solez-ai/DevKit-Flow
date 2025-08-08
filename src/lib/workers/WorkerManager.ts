@@ -3,7 +3,8 @@
  * Coordinates multiple worker pools and provides high-level API
  */
 
-import { WorkerPool, WorkerTask } from './WorkerPool';
+import { WorkerPool } from './WorkerPool';
+import type { WorkerTask } from './WorkerPool';
 
 export interface WorkerManagerConfig {
   regex: {
@@ -333,7 +334,7 @@ export class WorkerManager {
         );
         results.push({ success: true, result, pattern });
       } catch (error) {
-        results.push({ success: false, error: error.message, pattern });
+        results.push({ success: false, error: (error as Error).message, pattern });
       }
 
       onProgress?.((i + 1) / total, `Testing pattern ${i + 1} of ${total}`);
@@ -362,7 +363,7 @@ export class WorkerManager {
         );
         results.push({ success: true, result, batch });
       } catch (error) {
-        results.push({ success: false, error: error.message, batch });
+        results.push({ success: false, error: (error as Error).message, batch });
       }
 
       onProgress?.((i + 1) / total, `Analyzing batch ${i + 1} of ${total}`);
@@ -502,7 +503,7 @@ export class WorkerManager {
         await this.validateRegex('test', '');
         pools.regex = true;
       } catch (error) {
-        issues.push(`Regex pool unhealthy: ${error.message}`);
+        issues.push(`Regex pool unhealthy: ${(error as Error).message}`);
       }
     }
 
@@ -512,7 +513,7 @@ export class WorkerManager {
         await this.getAIRateLimitStatus();
         pools.ai = true;
       } catch (error) {
-        issues.push(`AI pool unhealthy: ${error.message}`);
+        issues.push(`AI pool unhealthy: ${(error as Error).message}`);
       }
     }
 
@@ -522,7 +523,7 @@ export class WorkerManager {
         await this.analyzeSessionComplexity([], []);
         pools.analysis = true;
       } catch (error) {
-        issues.push(`Analysis pool unhealthy: ${error.message}`);
+        issues.push(`Analysis pool unhealthy: ${(error as Error).message}`);
       }
     }
 

@@ -58,6 +58,13 @@ class TemplateManager {
   }
 
   /**
+   * Initialize the template manager (alias for init)
+   */
+  async initialize(): Promise<void> {
+    return this.init()
+  }
+
+  /**
    * Create built-in templates
    */
   private createBuiltInTemplates(): void {

@@ -76,7 +76,7 @@ export const ResponsiveMobileInterface: React.FC<ResponsiveMobileInterfaceProps>
   const { currentWorkspace, setCurrentWorkspace } = useWorkspace();
   
   const touchStartRef = useRef<{ x: number; y: number; time: number } | null>(null);
-  const gestureTimeoutRef = useRef<NodeJS.Timeout>();
+  const gestureTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Update viewport on resize and orientation change
@@ -350,7 +350,7 @@ export const ResponsiveMobileInterface: React.FC<ResponsiveMobileInterfaceProps>
                   <Card>
                     <CardHeader className="pb-3">
                       <CardTitle className="text-sm flex items-center gap-2">
-                        <Gesture className="h-4 w-4" />
+                        <div className="h-4 w-4">👆</div>
                         Gesture Hints
                       </CardTitle>
                     </CardHeader>
@@ -507,7 +507,7 @@ export const ResponsiveMobileInterface: React.FC<ResponsiveMobileInterfaceProps>
       <GestureIndicator />
 
       {/* Touch target enhancement for small elements */}
-      <style jsx global>{`
+      <style>{`
         .mobile-interface button,
         .mobile-interface [role="button"],
         .mobile-interface input,

@@ -58,8 +58,8 @@ export const ScreenReaderSupport: React.FC<ScreenReaderSupportProps> = ({
   const [announceStatusEnabled, setAnnounceStatusEnabled] = useState(true);
 
   const { announce } = useAccessibility();
-  const contextUpdateTimeoutRef = useRef<NodeJS.Timeout>();
-  const progressAnnouncementRef = useRef<NodeJS.Timeout>();
+  const contextUpdateTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const progressAnnouncementRef = useRef<NodeJS.Timeout | null>(null);
 
   // Detect screen reader presence
   useEffect(() => {

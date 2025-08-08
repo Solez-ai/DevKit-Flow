@@ -3,9 +3,12 @@
  * Orchestrates comprehensive testing with AI assistance
  */
 
-import { AITestGenerator, TestCase, TestSuite } from './utils/ai-test-generator';
-import { PerformanceTester, PerformanceThresholds, PerformanceTestResult } from './utils/performance-tester';
-import { AccessibilityTester, AccessibilityTestResult, AccessibilityTestOptions } from './utils/accessibility-tester';
+import { AITestGenerator } from './utils/ai-test-generator';
+import type { TestCase, TestSuite } from './utils/ai-test-generator';
+import { PerformanceTester } from './utils/performance-tester';
+import type { PerformanceThresholds, PerformanceTestResult } from './utils/performance-tester';
+import { AccessibilityTester } from './utils/accessibility-tester';
+import type { AccessibilityTestResult, AccessibilityTestOptions } from './utils/accessibility-tester';
 import { WorkerManager } from '../lib/workers/WorkerManager';
 
 export interface TestRunConfiguration {
@@ -175,7 +178,7 @@ export class TestSuiteRunner {
       result.issues.push({
         severity: 'critical',
         category: 'unit',
-        description: `Test suite execution failed: ${error.message}`,
+        description: `Test suite execution failed: ${(error as Error).message}`,
         recommendation: 'Review test configuration and ensure all dependencies are available'
       });
     } finally {
@@ -255,7 +258,7 @@ export class TestSuiteRunner {
       return {
         testCase,
         passed: false,
-        error: error.message,
+        error: (error as Error).message,
         executionTime: performance.now() - startTime
       };
     }
@@ -336,7 +339,7 @@ export class TestSuiteRunner {
       return {
         testCase,
         passed: false,
-        error: error.message,
+        error: (error as Error).message,
         executionTime: performance.now() - startTime
       };
     }

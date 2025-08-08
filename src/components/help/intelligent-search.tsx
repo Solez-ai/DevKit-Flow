@@ -102,7 +102,7 @@ export const IntelligentSearch: React.FC<IntelligentSearchProps> = ({
   
   const { generateResponse, isEnabled: aiEnabled } = useAIService();
   const searchInputRef = useRef<HTMLInputElement>(null);
-  const searchTimeoutRef = useRef<NodeJS.Timeout>();
+  const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Auto-focus if requested
   useEffect(() => {

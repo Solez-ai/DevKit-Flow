@@ -516,7 +516,7 @@ class BehaviorTracker {
  * React hook for smart lazy loading
  */
 export function useSmartLazyLoading(config?: Partial<LazyLoadingConfig>) {
-  const loaderRef = useRef<SmartLazyLoader>();
+  const loaderRef = useRef<SmartLazyLoader | null>(null);
   const [loadedItems, setLoadedItems] = useState<Set<string>>(new Set());
 
   useEffect(() => {

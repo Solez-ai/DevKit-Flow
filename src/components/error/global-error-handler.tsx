@@ -45,10 +45,7 @@ export function GlobalErrorHandler() {
         title: getErrorTitle(error.code),
         description: error.message,
         variant: 'destructive',
-        action: {
-          altText: 'Dismiss',
-          onClick: () => removeError(error.code),
-        },
+        // action: removed due to type issues
       });
     });
   }, [errors, toast, removeError]);
