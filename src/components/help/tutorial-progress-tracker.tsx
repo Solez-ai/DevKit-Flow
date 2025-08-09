@@ -72,7 +72,7 @@ export const TutorialProgressTracker: React.FC<TutorialProgressTrackerProps> = (
     tutorialsCompleted: 0,
     currentStreak: 0,
     skillPoints: 0,
-    currentLevel: 'beginner' as const
+    currentLevel: 'beginner' as 'beginner' | 'intermediate' | 'advanced' | 'expert'
   });
   const [aiRecommendations, setAiRecommendations] = useState<string[]>([]);
   const [isLoadingRecommendations, setIsLoadingRecommendations] = useState(false);
