@@ -24,22 +24,22 @@ export interface UseAIServiceReturn {
   clearError: () => void;
   disableFallbackMode: () => void;
   enableFallbackMode: () => void;
-  sendRequest: (prompt: string, context?: any) => Promise<string>;
+  sendRequest: (prompt: string, context?: any, type?: string) => Promise<string>;
   
-  // Specialized AI methods
-  generateCode: (prompt: string) => Promise<string>;
-  reviewCode: (code: string) => Promise<string>;
-  generateDocumentation: (code: string) => Promise<string>;
-  debugError: (error: string, code: string) => Promise<string>;
-  modernizeCode: (code: string) => Promise<string>;
-  extractFunctions: (code: string) => Promise<string>;
-  planArchitecture: (requirements: string) => Promise<string>;
-  suggestComponentStructure: (description: string) => Promise<string>;
-  generateProjectScaffolding: (description: string) => Promise<string>;
-  analyzeCodeComplexity: (code: string) => Promise<string>;
-  generateUnitTests: (code: string) => Promise<string>;
-  generateRegex: (description: string) => Promise<string>;
-  optimizeRegex: (pattern: string) => Promise<string>;
+  // Specialized AI methods - return objects with content property
+  generateCode: (prompt: string, context?: any) => Promise<{ content: string; confidence?: number }>;
+  reviewCode: (code: string) => Promise<{ content: string; confidence?: number }>;
+  generateDocumentation: (code: string, context?: any) => Promise<{ content: string; confidence?: number }>;
+  debugError: (error: string, code: string) => Promise<{ content: string; confidence?: number }>;
+  modernizeCode: (code: string, language?: string, context?: any) => Promise<{ content: string; confidence?: number }>;
+  extractFunctions: (code: string) => Promise<{ content: string; confidence?: number }>;
+  planArchitecture: (requirements: string, context?: any) => Promise<{ content: string; confidence?: number }>;
+  suggestComponentStructure: (description: string, context?: any) => Promise<{ content: string; confidence?: number }>;
+  generateProjectScaffolding: (description: string) => Promise<{ content: string; confidence?: number }>;
+  analyzeCodeComplexity: (code: string, context?: any) => Promise<{ content: string; confidence?: number }>;
+  generateUnitTests: (code: string, context?: any) => Promise<{ content: string; confidence?: number }>;
+  generateRegex: (description: string, options?: any) => Promise<{ content: string; confidence?: number }>;
+  optimizeRegex: (pattern: string, options?: any) => Promise<{ content: string; confidence?: number }>;
 }
 
 export const useAIService = (): UseAIServiceReturn => {
@@ -91,20 +91,71 @@ export const useAIService = (): UseAIServiceReturn => {
     setIsFallbackMode(true);
   }, []);
 
-  // Specialized AI methods - all use generateResponse internally
-  const generateCode = useCallback((prompt: string) => generateResponse(`Generate code: ${prompt}`), [generateResponse]);
-  const reviewCode = useCallback((code: string) => generateResponse(`Review this code: ${code}`), [generateResponse]);
-  const generateDocumentation = useCallback((code: string) => generateResponse(`Generate documentation for: ${code}`), [generateResponse]);
-  const debugError = useCallback((error: string, code: string) => generateResponse(`Debug error "${error}" in code: ${code}`), [generateResponse]);
-  const modernizeCode = useCallback((code: string) => generateResponse(`Modernize this code: ${code}`), [generateResponse]);
-  const extractFunctions = useCallback((code: string) => generateResponse(`Extract functions from: ${code}`), [generateResponse]);
-  const planArchitecture = useCallback((requirements: string) => generateResponse(`Plan architecture for: ${requirements}`), [generateResponse]);
-  const suggestComponentStructure = useCallback((description: string) => generateResponse(`Suggest component structure for: ${description}`), [generateResponse]);
-  const generateProjectScaffolding = useCallback((description: string) => generateResponse(`Generate project scaffolding for: ${description}`), [generateResponse]);
-  const analyzeCodeComplexity = useCallback((code: string) => generateResponse(`Analyze complexity of: ${code}`), [generateResponse]);
-  const generateUnitTests = useCallback((code: string) => generateResponse(`Generate unit tests for: ${code}`), [generateResponse]);
-  const generateRegex = useCallback((description: string) => generateResponse(`Generate regex for: ${description}`), [generateResponse]);
-  const optimizeRegex = useCallback((pattern: string) => generateResponse(`Optimize regex pattern: ${pattern}`), [generateResponse]);
+  // Specialized AI methods - return objects with content property
+  const generateCode = useCallback(async (prompt: string, context?: any) => {
+    const content = await generateResponse(`Generate code: ${prompt}`, context);
+    return { content, confidence: 0.8 };
+  }, [generateResponse]);
+  
+  const reviewCode = useCallback(async (code: string) => {
+    const content = await generateResponse(`Review this code: ${code}`);
+    return { content, confidence: 0.9 };
+  }, [generateResponse]);
+  
+  const generateDocumentation = useCallback(async (code: string, context?: any) => {
+    const content = await generateResponse(`Generate documentation for: ${code}`, context);
+    return { content, confidence: 0.85 };
+  }, [generateResponse]);
+  
+  const debugError = useCallback(async (error: string, code: string) => {
+    const content = await generateResponse(`Debug error "${error}" in code: ${code}`);
+    return { content, confidence: 0.75 };
+  }, [generateResponse]);
+  
+  const modernizeCode = useCallback(async (code: string, language?: string, context?: any) => {
+    const content = await generateResponse(`Modernize this ${language || ''} code: ${code}`, context);
+    return { content, confidence: 0.8 };
+  }, [generateResponse]);
+  
+  const extractFunctions = useCallback(async (code: string) => {
+    const content = await generateResponse(`Extract functions from: ${code}`);
+    return { content, confidence: 0.85 };
+  }, [generateResponse]);
+  
+  const planArchitecture = useCallback(async (requirements: string, context?: any) => {
+    const content = await generateResponse(`Plan architecture for: ${requirements}`, context);
+    return { content, confidence: 0.8 };
+  }, [generateResponse]);
+  
+  const suggestComponentStructure = useCallback(async (description: string, context?: any) => {
+    const content = await generateResponse(`Suggest component structure for: ${description}`, context);
+    return { content, confidence: 0.8 };
+  }, [generateResponse]);
+  
+  const generateProjectScaffolding = useCallback(async (description: string) => {
+    const content = await generateResponse(`Generate project scaffolding for: ${description}`);
+    return { content, confidence: 0.75 };
+  }, [generateResponse]);
+  
+  const analyzeCodeComplexity = useCallback(async (code: string, context?: any) => {
+    const content = await generateResponse(`Analyze complexity of: ${code}`, context);
+    return { content, confidence: 0.9 };
+  }, [generateResponse]);
+  
+  const generateUnitTests = useCallback(async (code: string, context?: any) => {
+    const content = await generateResponse(`Generate unit tests for: ${code}`, context);
+    return { content, confidence: 0.85 };
+  }, [generateResponse]);
+  
+  const generateRegex = useCallback(async (description: string, options?: any) => {
+    const content = await generateResponse(`Generate regex for: ${description}`, options);
+    return { content, confidence: 0.8 };
+  }, [generateResponse]);
+  
+  const optimizeRegex = useCallback(async (pattern: string, options?: any) => {
+    const content = await generateResponse(`Optimize regex pattern: ${pattern}`, options);
+    return { content, confidence: 0.85 };
+  }, [generateResponse]);
 
   return {
     // Core functionality
@@ -125,7 +176,7 @@ export const useAIService = (): UseAIServiceReturn => {
     clearError,
     disableFallbackMode,
     enableFallbackMode,
-    sendRequest: generateResponse,
+    sendRequest: (prompt: string, context?: any, type?: string) => generateResponse(prompt, context),
     
     // Specialized AI methods
     generateCode,

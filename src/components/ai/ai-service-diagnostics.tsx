@@ -38,7 +38,7 @@ interface AIServiceDiagnosticsProps {
  * Provides comprehensive diagnostics and monitoring for AI service
  */
 export function AIServiceDiagnostics({ className }: AIServiceDiagnosticsProps) {
-  const { isEnabled, isLoading, error } = useAIService()
+  const { isEnabled, isLoading, error, queueStatus, serviceStatus, consecutiveFailures } = useAIService()
   const [diagnosticTests, setDiagnosticTests] = useState<DiagnosticTest[]>([])
   const [isRunningDiagnostics, setIsRunningDiagnostics] = useState(false)
   const [diagnosticsHistory, setDiagnosticsHistory] = useState<Array<{
@@ -134,7 +134,7 @@ export function AIServiceDiagnostics({ className }: AIServiceDiagnosticsProps) {
 
       // Test 4: Rate Limit Status
       await runTest(updatedTests, 'rate-limits', async () => {
-        const queueStatus = status.queueStatus
+        // queueStatus is already available from hook
         const totalRequests = queueStatus.completed + queueStatus.failed
         return `${totalRequests} requests processed, ${queueStatus.pending} pending`
       })
@@ -341,10 +341,10 @@ export function AIServiceDiagnostics({ className }: AIServiceDiagnosticsProps) {
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold capitalize">
-                    {status.serviceStatus}
+                    {serviceStatus}
                   </div>
                   <div className="text-xs text-muted-foreground">
-                    {status.consecutiveFailures} consecutive failures
+                    {consecutiveFailures} consecutive failures
                   </div>
                 </CardContent>
               </Card>
@@ -358,7 +358,7 @@ export function AIServiceDiagnostics({ className }: AIServiceDiagnosticsProps) {
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">
-                    {status.queueStatus.pending + status.queueStatus.processing}
+                    {queueStatus.pending + queueStatus.processing}
                   </div>
                   <div className="text-xs text-muted-foreground">
                     Active requests
@@ -374,17 +374,17 @@ export function AIServiceDiagnostics({ className }: AIServiceDiagnosticsProps) {
               <CardContent className="space-y-3">
                 <div className="flex justify-between text-sm">
                   <span>Completed:</span>
-                  <span className="font-medium">{status.queueStatus.completed}</span>
+                  <span className="font-medium">{queueStatus.completed}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span>Failed:</span>
-                  <span className="font-medium text-red-600">{status.queueStatus.failed}</span>
+                  <span className="font-medium text-red-600">{queueStatus.failed}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span>Success Rate:</span>
                   <span className="font-medium">
-                    {status.queueStatus.completed + status.queueStatus.failed > 0 
-                      ? Math.round((status.queueStatus.completed / (status.queueStatus.completed + status.queueStatus.failed)) * 100)
+                    {queueStatus.completed + queueStatus.failed > 0 
+                      ? Math.round((queueStatus.completed / (queueStatus.completed + queueStatus.failed)) * 100)
                       : 0}%
                   </span>
                 </div>

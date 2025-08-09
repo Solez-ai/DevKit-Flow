@@ -95,7 +95,7 @@ export function AIStatusIndicator({ className, showLabel = false }: AIStatusIndi
               {error && (
                 <div className="mt-2 text-red-400">
                   <p className="font-medium">Error</p>
-                  <p>{error}</p>
+                  <p>{error.message}</p>
                 </div>
               )}
             </div>
