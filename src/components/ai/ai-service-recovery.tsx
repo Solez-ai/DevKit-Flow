@@ -15,7 +15,7 @@ import {
   Settings,
   Info
 } from 'lucide-react'
-import { useAIService, useAIServiceStatus } from '@/hooks/use-ai-service'
+import { useAIService } from '@/hooks/use-ai-service'
 import type { AIServiceStatus } from '@/types'
 
 interface AIServiceRecoveryProps {
@@ -35,8 +35,6 @@ export function AIServiceRecovery({ onOpenSettings, className }: AIServiceRecove
     isLoading,
     error 
   } = useAIService()
-  
-  const status = useAIServiceStatus()
   const [recoveryAttempts, setRecoveryAttempts] = useState(0)
   const [lastRecoveryTime, setLastRecoveryTime] = useState<Date | null>(null)
   const [autoRetryEnabled, setAutoRetryEnabled] = useState(false)
@@ -317,8 +315,7 @@ export function AIServiceRecovery({ onOpenSettings, className }: AIServiceRecove
  * Compact AI Service Recovery Button
  */
 export function AIServiceRecoveryButton({ className }: { className?: string }) {
-  const { disableFallbackMode, isLoading } = useAIService()
-  const status = useAIServiceStatus()
+  const { isEnabled, isLoading, error } = useAIService()
 
   if (status.serviceStatus === 'healthy') {
     return null

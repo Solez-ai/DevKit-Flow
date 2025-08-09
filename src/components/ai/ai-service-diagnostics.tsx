@@ -15,7 +15,7 @@ import {
   RefreshCw,
   Download
 } from 'lucide-react'
-import { useAIServiceStatus } from '@/hooks/use-ai-service'
+import { useAIService } from '@/hooks/use-ai-service'
 import { aiService } from '@/lib/ai-service'
 import type { AIServiceStatus } from '@/types'
 
@@ -38,7 +38,7 @@ interface AIServiceDiagnosticsProps {
  * Provides comprehensive diagnostics and monitoring for AI service
  */
 export function AIServiceDiagnostics({ className }: AIServiceDiagnosticsProps) {
-  const status = useAIServiceStatus()
+  const { isEnabled, isLoading, error } = useAIService()
   const [diagnosticTests, setDiagnosticTests] = useState<DiagnosticTest[]>([])
   const [isRunningDiagnostics, setIsRunningDiagnostics] = useState(false)
   const [diagnosticsHistory, setDiagnosticsHistory] = useState<Array<{

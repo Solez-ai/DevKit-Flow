@@ -55,8 +55,9 @@ interface Tutorial {
   prerequisites?: string[];
   learningObjectives: string[];
   aiPersonalized?: boolean;
-}interfac
-e UserProgress {
+}
+
+interface UserProgress {
   completedTutorials: string[];
   currentTutorial?: string;
   currentStep: number;
@@ -232,8 +233,9 @@ export const AIEnhancedInteractiveTutorials: React.FC<AIEnhancedInteractiveTutor
         }
       ]
     }
-  ];  // Gener
-ate AI personalization for tutorial
+  ];
+
+  // Generate AI personalization for tutorial
   const generateAIPersonalization = useCallback(async (tutorial: Tutorial) => {
     if (!aiEnabled || !tutorial.aiPersonalized) return;
 
@@ -347,8 +349,9 @@ Consider:
       component: 'tutorial-player',
       userAction: 'step-back'
     });
-  }, [currentStepIndex, trackUserAction]);  // Comp
-lete tutorial
+  }, [currentStepIndex, trackUserAction]);
+
+  // Complete tutorial
   const completeTutorial = useCallback(() => {
     if (!currentTutorial || !tutorialStartTime) return;
     
@@ -452,8 +455,9 @@ lete tutorial
 
   const currentStep = currentTutorial?.steps[currentStepIndex];
   const progress = currentTutorial ? ((currentStepIndex + 1) / currentTutorial.steps.length) * 100 : 0;
-  const isLastStep = currentTutorial ? currentStepIndex >= currentTutorial.steps.length - 1 : false;  if (!
-isOpen) return null;
+  const isLastStep = currentTutorial ? currentStepIndex >= currentTutorial.steps.length - 1 : false;
+
+  if (!isOpen) return null;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -576,8 +580,9 @@ isOpen) return null;
                 </div>
               </div>
             </div>
-          )}         
- {/* Tutorial Player */}
+          )}
+
+          {/* Tutorial Player */}
           {currentTutorial && (
             <div className="flex-1 flex flex-col">
               {/* Tutorial Header */}

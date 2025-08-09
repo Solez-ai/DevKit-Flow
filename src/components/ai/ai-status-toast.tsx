@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { toast } from '@/hooks/use-toast'
-import { useAIServiceStatus } from '@/hooks/use-ai-service'
+import { useAIService } from '@/hooks/use-ai-service'
 import { CheckCircle, AlertTriangle, XCircle, Wifi, WifiOff } from 'lucide-react'
 import type { AIServiceStatus } from '@/types'
 
@@ -9,7 +9,7 @@ import type { AIServiceStatus } from '@/types'
  * Automatically shows toast notifications for AI service status changes
  */
 export function AIStatusToastManager() {
-  const status = useAIServiceStatus()
+  const { isEnabled, isLoading, error } = useAIService()
   const previousStatus = useRef<AIServiceStatus | null>(null)
   const hasShownInitialStatus = useRef(false)
 

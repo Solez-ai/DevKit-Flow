@@ -230,8 +230,9 @@ DevKit Flow leverages Claude MCP for intelligent assistance across all features.
       aiGenerated: true,
       mediaType: 'text'
     }
-  ];  // AI-po
-wered semantic search
+  ];
+
+  // AI-powered semantic search
   const performAISearch = useCallback(async (query: string) => {
     if (!aiEnabled || !query.trim()) {
       return sampleDocumentation.map(item => ({
@@ -467,8 +468,9 @@ Focus on real-world usage scenarios and provide specific examples.`;
     }
   };
 
-  if (!isOpen) return null;  retu
-rn (
+  if (!isOpen) return null;
+
+  return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div className="w-full max-w-7xl h-[90vh] bg-background rounded-lg shadow-xl flex flex-col m-4">
         {/* Header */}

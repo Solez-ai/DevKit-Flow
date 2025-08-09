@@ -307,8 +307,9 @@ Limit to 5 recommendations.`;
     }
   };
 
-  if (!isOpen) return null;  r
-eturn (
+  if (!isOpen) return null;
+
+  return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div className="w-full max-w-6xl h-[90vh] bg-background rounded-lg shadow-xl flex flex-col m-4">
         {/* Header */}
