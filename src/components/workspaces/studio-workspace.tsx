@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useSessions, useUIState, useNodes } from "@/hooks/use-app-store"
 import { generateId } from "@/lib/utils"
 import { FlowCanvas, NodePalette } from "@/components/canvas"
+import { ReactFlowProvider } from 'reactflow'
 import { CommitGenerator } from "@/components/commit"
 import { ProgressDashboard } from "@/components/analytics"
 import { TimelineManager } from "@/components/timeline"
@@ -382,7 +383,9 @@ export function StudioWorkspace() {
               <NodePalette />
             </div>
             
-            <FlowCanvas sessionId={currentSession.id} />
+            <ReactFlowProvider>
+              <FlowCanvas sessionId={currentSession.id} />
+            </ReactFlowProvider>
           </>
         ) : (
           <ComponentWireframeWorkspace

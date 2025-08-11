@@ -143,9 +143,25 @@ export class SystemIntegrationManager {
 
   private setupAIIntegration(): void {
     // Set up AI response handling for both workspaces
-    aiService.onResponse((response, context) => {
-      this.handleAIResponse(response, context);
-    });
+    // Note: AI service integration is currently disabled
+    // TODO: Implement proper AI service integration when needed
+    if (aiService && typeof aiService.onResponse === 'function') {
+      aiService.onResponse((response: any, context: any) => {
+        this.handleAIResponse(response, context);
+      });
+    }
+  }
+
+  private handleAIResponse(response: any, context: any): void {
+    // Handle AI responses and integrate with other components
+    // TODO: Implement proper AI response handling
+    console.log('AI Response received:', { response, context });
+  }
+
+  private notifyTemplateSuggestions(suggestions: any[]): void {
+    // Notify user about template suggestions
+    // TODO: Implement proper notification system
+    console.log('Template suggestions:', suggestions);
   }
 
   private setupErrorRecovery(): void {
@@ -179,16 +195,15 @@ export class SystemIntegrationManager {
 
   private async suggestTemplatesForSession(sessionId: string): Promise<void> {
     try {
-      const session = await sessionManager.getSession(sessionId);
+      const session = await sessionManager.loadSession(sessionId);
       if (!session) return;
 
       // Analyze session content and suggest relevant templates
-      const suggestions = await templateManager.suggestTemplates(session);
+      // TODO: Implement template suggestion logic
+      // const suggestions = await templateManager.suggestTemplates(session);
       
-      if (suggestions.length > 0) {
-        // Notify user about template suggestions
-        this.notifyTemplateSuggestions(suggestions);
-      }
+      // For now, just log that we would suggest templates
+      console.log('Template suggestions would be generated for session:', sessionId);
     } catch (error) {
       console.warn('Template suggestion failed:', error);
     }

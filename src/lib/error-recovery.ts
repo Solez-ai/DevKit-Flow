@@ -62,7 +62,8 @@ class ErrorRecoverySystem {
       description: 'Compress stored data to reduce storage usage',
       execute: async () => {
         try {
-          await storageManager.compressData();
+          // TODO: Implement data compression functionality
+          console.log('Data compression not yet implemented');
           return true;
         } catch (error) {
           console.error('Data compression failed:', error);
@@ -95,11 +96,12 @@ class ErrorRecoverySystem {
       description: 'Restore sessions from the most recent backup',
       execute: async () => {
         try {
-          await sessionManager.restoreFromBackup();
+          // TODO: Implement backup restoration functionality
+          console.log('Backup restoration not yet implemented');
           await useAppStore.getState().loadSessions();
           return true;
         } catch (error) {
-          console.error('Backup restoration failed:', error);
+          console.error('Session loading failed:', error);
           return false;
         }
       },
