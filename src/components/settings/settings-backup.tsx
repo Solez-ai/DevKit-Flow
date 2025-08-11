@@ -27,6 +27,9 @@ interface BackupData {
   settings: any
   aiConfig: any
   shortcuts: any[]
+  sessions?: any
+  patterns?: any
+  templates?: any
   metadata: {
     appVersion: string
     platform: string
@@ -189,16 +192,16 @@ export const SettingsBackup: React.FC = () => {
       }
 
       // Restore other data
-      if (backupData.sessions && (backupData as any).sessions) {
-        localStorage.setItem('df_workspace_state', JSON.stringify((backupData as any).sessions))
+      if (backupData.sessions) {
+        localStorage.setItem('df_workspace_state', JSON.stringify(backupData.sessions))
       }
 
-      if (backupData.patterns && (backupData as any).patterns) {
-        localStorage.setItem('df_regex_library', JSON.stringify((backupData as any).patterns))
+      if (backupData.patterns) {
+        localStorage.setItem('df_regex_library', JSON.stringify(backupData.patterns))
       }
 
-      if (backupData.templates && (backupData as any).templates) {
-        localStorage.setItem('df_templates', JSON.stringify((backupData as any).templates))
+      if (backupData.templates) {
+        localStorage.setItem('df_templates', JSON.stringify(backupData.templates))
       }
 
       // Refresh data info

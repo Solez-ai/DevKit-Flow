@@ -4,6 +4,13 @@ import { IntelligentHelpProvider } from './intelligent-help-provider';
 import { WithSmartTooltip } from './smart-tooltip-system';
 import { Button } from '@/components/ui/button';
 
+// Jest globals
+declare global {
+  var describe: (name: string, fn: () => void) => void
+  var it: (name: string, fn: () => void) => void
+  var expect: (value: any) => any
+}
+
 // Simple test to verify the help system components work together
 describe('AI Help System Integration', () => {
   it('should render help provider without errors', () => {

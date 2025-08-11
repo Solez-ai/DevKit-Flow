@@ -17,7 +17,7 @@ interface AccessibilityAnnouncement {
 }
 
 export function useAccessibility() {
-  const { settings, updateSettings } = useSettings()
+  const { settings, updateSetting } = useSettings()
   const [announcements, setAnnouncements] = useState<AccessibilityAnnouncement[]>([])
   
   // Default accessibility settings
@@ -42,16 +42,14 @@ export function useAccessibility() {
     const prefersLargeText = window.matchMedia('(min-resolution: 2dppx)').matches
 
     if (prefersReducedMotion || prefersHighContrast || prefersLargeText) {
-      updateSettings({
-        accessibility: {
-          ...accessibilitySettings,
-          reducedMotion: prefersReducedMotion,
-          highContrast: prefersHighContrast,
-          largeText: prefersLargeText
-        }
+      updateSetting('accessibility', {
+        ...accessibilitySettings,
+        reducedMotion: prefersReducedMotion,
+        highContrast: prefersHighContrast,
+        largeText: prefersLargeText
       })
     }
-  }, [accessibilitySettings, updateSettings])
+  }, [accessibilitySettings, updateSetting])
 
   // Apply accessibility settings to document
   useEffect(() => {
@@ -118,13 +116,11 @@ export function useAccessibility() {
     key: keyof AccessibilitySettings,
     value: boolean
   ) => {
-    updateSettings({
-      accessibility: {
-        ...accessibilitySettings,
-        [key]: value
-      }
+    updateSetting('accessibility', {
+      ...accessibilitySettings,
+      [key]: value
     })
-  }, [accessibilitySettings, updateSettings])
+  }, [accessibilitySettings, updateSetting])
 
   // Toggle accessibility features
   const toggleHighContrast = useCallback(() => {

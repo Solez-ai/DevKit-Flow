@@ -454,10 +454,8 @@ export class WorkerManager {
     if (this.aiPool) {
       try {
         const rateLimitStatus = await this.getAIRateLimitStatus();
-        baseStats.pools.ai = {
-          ...baseStats.pools.ai,
-          rateLimitStatus
-        };
+        // Note: rateLimitStatus is available but not included in base stats interface
+        console.log('AI Rate limit status:', rateLimitStatus);
       } catch (error) {
         console.warn('Failed to get AI rate limit status:', error);
       }

@@ -114,10 +114,12 @@ export function createTestConfig(overrides: Partial<TestRunConfiguration> = {}):
   return {
     ...DEFAULT_TEST_CONFIG,
     ...overrides,
-    performanceThresholds: {
-      ...DEFAULT_TEST_CONFIG.performanceThresholds,
-      ...overrides.performanceThresholds
-    },
+    performanceThresholds: overrides.performanceThresholds ? {
+      maxExecutionTime: overrides.performanceThresholds.maxExecutionTime ?? DEFAULT_TEST_CONFIG.performanceThresholds!.maxExecutionTime,
+      maxMemoryUsage: overrides.performanceThresholds.maxMemoryUsage ?? DEFAULT_TEST_CONFIG.performanceThresholds!.maxMemoryUsage,
+      minThroughput: overrides.performanceThresholds.minThroughput ?? DEFAULT_TEST_CONFIG.performanceThresholds!.minThroughput,
+      maxCpuUsage: overrides.performanceThresholds.maxCpuUsage ?? DEFAULT_TEST_CONFIG.performanceThresholds!.maxCpuUsage
+    } : DEFAULT_TEST_CONFIG.performanceThresholds!,
     accessibilityOptions: {
       ...DEFAULT_TEST_CONFIG.accessibilityOptions,
       ...overrides.accessibilityOptions

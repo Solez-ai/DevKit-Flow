@@ -223,7 +223,7 @@ export class SmartLazyLoader {
         const img = new Image();
         img.onload = () => resolve(img);
         img.onerror = reject;
-        img.src = item.src;
+        img.src = item.src!;
       });
     } else if (item.data) {
       // Simulate async data loading
@@ -241,7 +241,7 @@ export class SmartLazyLoader {
     // Remove oldest items if cache is full
     if (this.loadedCache.size >= this.config.cacheSize) {
       const oldestKey = this.loadedCache.keys().next().value;
-      this.loadedCache.delete(oldestKey);
+      if (oldestKey) this.loadedCache.delete(oldestKey);
     }
 
     this.loadedCache.set(id, data);

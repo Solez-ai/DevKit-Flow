@@ -41,10 +41,10 @@ export class WorkerPool {
 
   constructor(options: WorkerPoolOptions) {
     this.options = {
-      taskTimeout: 30000,
-      maxRetries: 3,
-      loadBalancing: 'least-busy',
-      ...options
+      ...options,
+      taskTimeout: options.taskTimeout ?? 30000,
+      maxRetries: options.maxRetries ?? 3,
+      loadBalancing: options.loadBalancing ?? 'least-busy'
     };
 
     this.initializeWorkers();

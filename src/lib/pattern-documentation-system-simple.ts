@@ -285,13 +285,15 @@ export class PatternDocumentationSystem {
 
   async exportDocumentation(
     documentation: PatternDocumentation,
-    format: 'markdown' | 'html' | 'json' = 'markdown'
+    format: 'markdown' | 'html' | 'json' | 'pdf' = 'markdown'
   ): Promise<string> {
     switch (format) {
       case 'json':
         return JSON.stringify(documentation, null, 2)
       case 'html':
         return `<html><body><h1>${documentation.title}</h1><p>${documentation.explanation}</p></body></html>`
+      case 'pdf':
+        return `PDF export not yet implemented. Use HTML format for now.`
       case 'markdown':
       default:
         return `# ${documentation.title}\n\n${documentation.explanation}\n\n## Examples\n\n${documentation.examples.map(ex => ex.description).join('\n\n')}`

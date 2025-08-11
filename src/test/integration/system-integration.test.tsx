@@ -20,7 +20,7 @@ describe('System Integration', () => {
 
   afterEach(() => {
     // Cleanup
-    systemIntegration.stopMonitoring?.();
+    // systemIntegration.stopMonitoring?.(); // Method doesn't exist
   });
 
   describe('Application Initialization', () => {
@@ -339,7 +339,7 @@ describe('System Recovery', () => {
   it('should handle network failures gracefully', async () => {
     // Mock network failure
     const originalFetch = global.fetch;
-    global.fetch = jest.fn().mockRejectedValue(new Error('Network error'));
+    global.fetch = (() => Promise.reject(new Error('Network error'))) as any;
 
     render(<App />);
 

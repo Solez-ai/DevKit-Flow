@@ -23,6 +23,16 @@ export interface UserSettings {
   dataRetentionDays: number
   analyticsEnabled: boolean
   feedbackSubmitted: boolean
+  
+  // Accessibility
+  accessibility?: {
+    highContrast?: boolean
+    reducedMotion?: boolean
+    largeText?: boolean
+    screenReaderOptimized?: boolean
+    keyboardNavigation?: boolean
+    focusIndicators?: boolean
+  }
 }
 
 export interface OnboardingState {
@@ -96,7 +106,7 @@ export interface WorkspaceTab {
 }
 
 export interface SettingsPanel {
-  activeCategory: 'general' | 'ai' | 'appearance' | 'behavior' | 'data' | 'advanced'
+  activeCategory: 'general' | 'ai' | 'appearance' | 'behavior' | 'accessibility' | 'data' | 'advanced'
   categories: SettingsCategory[]
   searchQuery?: string
   hasUnsavedChanges: boolean

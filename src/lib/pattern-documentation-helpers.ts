@@ -92,10 +92,11 @@ export class PatternDocumentationHelpers {
       const memoryUsage = this.estimateMemoryUsage(pattern, size)
       
       benchmarks.push({
+        name: `Performance test with ${size} character input`,
+        result: `${executionTime}ms`,
         inputSize: size.toString(),
         executionTime: executionTime.toString(),
-        memoryUsage: memoryUsage.toString(),
-        testDescription: `Performance test with ${size} character input`
+        memoryUsage: memoryUsage.toString()
       })
     }
     

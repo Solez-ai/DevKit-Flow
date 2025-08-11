@@ -264,7 +264,7 @@ class ErrorRecoverySystem {
       };
     } catch (error) {
       console.warn('Failed to capture app state:', error);
-      return { captureError: error?.message };
+      return { captureError: error instanceof Error ? error.message : String(error) };
     }
   }
 

@@ -73,15 +73,14 @@ export class PatternDocumentationExporter {
     if (options.includeTestCases && documentation.testCases.length > 0) {
       markdown += `## Test Cases\n\n`
       for (const testDoc of documentation.testCases) {
-        markdown += `### ${testDoc.testCase.description || 'Test Case'}\n\n`
-        markdown += `**Input:** \`${testDoc.testCase.input}\`\n\n`
-        markdown += `**Expected:** ${testDoc.testCase.shouldMatch ? 'Match' : 'No Match'}\n\n`
-        markdown += `**Explanation:** ${testDoc.explanation}\n\n`
+        markdown += `### ${testDoc.description || testDoc.name || 'Test Case'}\n\n`
+        markdown += `**Input:** \`${testDoc.input}\`\n\n`
+        markdown += `**Expected:** ${testDoc.shouldMatch ? 'Match' : 'No Match'}\n\n`
         
-        if (testDoc.edgeCases.length > 0) {
-          markdown += `**Edge Cases:**\n`
-          for (const edge of testDoc.edgeCases) {
-            markdown += `- \`${edge.input}\` - ${edge.explanation}\n`
+        if (testDoc.expectedMatches && testDoc.expectedMatches.length > 0) {
+          markdown += `**Expected Matches:**\n`
+          for (const match of testDoc.expectedMatches) {
+            markdown += `- \`${match.text}\` at position ${match.startIndex}-${match.endIndex}\n`
           }
           markdown += `\n`
         }
@@ -200,9 +199,9 @@ export class PatternDocumentationExporter {
         markdown += `\n`
       }
       
-      if (documentation.aiOptimizations.length > 0) {
+      if (documentation.aiOptimizations && documentation.aiOptimizations.length > 0) {
         markdown += `### AI Optimization Suggestions\n\n`
-        for (const opt of documentation.aiOptimizations) {
+        for (const opt of documentation.aiOptimizations!) {
           markdown += `#### ${opt.type} Optimization\n\n`
           markdown += `**Suggestion:** ${opt.suggestion}\n\n`
           markdown += `**Original:** \`${opt.originalPattern}\`\n\n`
@@ -233,9 +232,14 @@ export class PatternDocumentationExporter {
         
         markdown += `**Solutions:**\n`
         for (const solution of issue.solutions) {
-          markdown += `- ${solution.solution} (${solution.effectiveness} effectiveness)\n`
-          for (const step of solution.steps) {
-            markdown += `  - ${step}\n`
+          if (typeof solution === 'string') {
+            markdown += `- ${solution}\n`
+          } else {
+            const solutionObj = solution as any
+            markdown += `- ${solutionObj.solution} (${solutionObj.effectiveness} effectiveness)\n`
+            for (const step of solutionObj.steps) {
+              markdown += `  - ${step}\n`
+            }
           }
         }
         markdown += `\n`

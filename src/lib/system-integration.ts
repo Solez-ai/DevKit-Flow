@@ -145,11 +145,11 @@ export class SystemIntegrationManager {
     // Set up AI response handling for both workspaces
     // Note: AI service integration is currently disabled
     // TODO: Implement proper AI service integration when needed
-    if (aiService && typeof aiService.onResponse === 'function') {
-      aiService.onResponse((response: any, context: any) => {
-        this.handleAIResponse(response, context);
-      });
-    }
+    // if (aiService && typeof aiService.onResponse === 'function') {
+    //   aiService.onResponse((response: any, context: any) => {
+    //     this.handleAIResponse(response, context);
+    //   });
+    // }
   }
 
   // Duplicate methods removed - see implementations below

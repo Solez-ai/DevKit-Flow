@@ -98,7 +98,7 @@ export const DataManagement: React.FC = () => {
 
   const canClearStorage = (key: string): boolean => {
     // Don't allow clearing critical settings
-    const protectedKeys = [
+    const protectedKeys: StorageKey[] = [
       STORAGE_KEYS.USER_SETTINGS,
       STORAGE_KEYS.ONBOARDING_STATE
     ]
