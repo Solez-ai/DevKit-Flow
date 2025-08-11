@@ -309,10 +309,12 @@ export function AICodeAssistant({
       }
 
       if (response) {
-        addToConversation('assistant', response.content, {
+        const content = typeof response === 'string' ? response : response.content
+        const confidence = typeof response === 'string' ? undefined : response.confidence
+        addToConversation('assistant', content, {
           requestType: selectedAssistanceType,
           language: context.language,
-          confidence: response.confidence
+          confidence
         })
       }
     } catch (err) {

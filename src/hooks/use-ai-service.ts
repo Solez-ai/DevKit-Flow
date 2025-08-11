@@ -16,6 +16,7 @@ export interface UseAIServiceReturn {
     processing: number;
     completed: number;
     failed: number;
+    activeRequests: number;
   };
   consecutiveFailures: number;
   lastHealthCheck: Date;
@@ -28,14 +29,14 @@ export interface UseAIServiceReturn {
   
   // Specialized AI methods - return objects with content property
   generateCode: (prompt: string, context?: any) => Promise<{ content: string; confidence?: number }>;
-  reviewCode: (code: string) => Promise<{ content: string; confidence?: number }>;
+  reviewCode: (code: string, context?: any) => Promise<{ content: string; confidence?: number }>;
   generateDocumentation: (code: string, context?: any) => Promise<{ content: string; confidence?: number }>;
   debugError: (error: string, code: string) => Promise<{ content: string; confidence?: number }>;
   modernizeCode: (code: string, language?: string, context?: any) => Promise<{ content: string; confidence?: number }>;
   extractFunctions: (code: string) => Promise<{ content: string; confidence?: number }>;
   planArchitecture: (requirements: string, context?: any) => Promise<{ content: string; confidence?: number }>;
   suggestComponentStructure: (description: string, context?: any) => Promise<{ content: string; confidence?: number }>;
-  generateProjectScaffolding: (description: string) => Promise<{ content: string; confidence?: number }>;
+  generateProjectScaffolding: (description: string, context?: any) => Promise<{ content: string; confidence?: number }>;
   analyzeCodeComplexity: (code: string, context?: any) => Promise<{ content: string; confidence?: number }>;
   generateUnitTests: (code: string, context?: any) => Promise<{ content: string; confidence?: number }>;
   generateRegex: (description: string, options?: any) => Promise<{ content: string; confidence?: number }>;
@@ -52,7 +53,8 @@ export const useAIService = (): UseAIServiceReturn => {
     pending: 0,
     processing: 0,
     completed: 0,
-    failed: 0
+    failed: 0,
+    activeRequests: 0
   });
 
   const generateResponse = useCallback(async (prompt: string, context?: any): Promise<string> => {
@@ -97,8 +99,9 @@ export const useAIService = (): UseAIServiceReturn => {
     return { content, confidence: 0.8 };
   }, [generateResponse]);
   
-  const reviewCode = useCallback(async (code: string) => {
-    const content = await generateResponse(`Review this code: ${code}`);
+  const reviewCode = useCallback(async (code: string, context?: any) => {
+    const prompt = context?.focus ? `Review this code with focus on ${context.focus}: ${code}` : `Review this code: ${code}`;
+    const content = await generateResponse(prompt, context);
     return { content, confidence: 0.9 };
   }, [generateResponse]);
   
@@ -132,8 +135,8 @@ export const useAIService = (): UseAIServiceReturn => {
     return { content, confidence: 0.8 };
   }, [generateResponse]);
   
-  const generateProjectScaffolding = useCallback(async (description: string) => {
-    const content = await generateResponse(`Generate project scaffolding for: ${description}`);
+  const generateProjectScaffolding = useCallback(async (description: string, context?: any) => {
+    const content = await generateResponse(`Generate project scaffolding for: ${description}`, context);
     return { content, confidence: 0.75 };
   }, [generateResponse]);
   

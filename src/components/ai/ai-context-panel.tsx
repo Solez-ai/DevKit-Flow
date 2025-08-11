@@ -204,7 +204,8 @@ export function AIContextPanel({
       const result = await sendRequest(finalPrompt, context)
       
       if (result) {
-        setResponse(result.content)
+        const content = typeof result === 'string' ? result : (result as any).content
+        setResponse(content)
       }
     } catch (err) {
       // Error is handled by the hook

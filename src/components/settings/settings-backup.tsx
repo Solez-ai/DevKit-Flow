@@ -91,7 +91,7 @@ export const SettingsBackup: React.FC = () => {
         timestamp: new Date().toISOString(),
         settings: backupOptions.includeSettings ? settings : null,
         aiConfig: backupOptions.includeSettings ? aiConfig : null,
-        shortcuts: backupOptions.includeSettings ? shortcuts : null,
+        shortcuts: backupOptions.includeSettings ? shortcuts : [],
         metadata: {
           appVersion: '1.0.0',
           platform: navigator.platform,

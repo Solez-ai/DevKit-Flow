@@ -33,7 +33,12 @@ export function AIServiceRecovery({ onOpenSettings, className }: AIServiceRecove
     enableFallbackMode, 
     clearError, 
     isLoading,
-    error 
+    error,
+    serviceStatus,
+    isFallbackMode,
+    lastHealthCheck,
+    consecutiveFailures,
+    queueStatus
   } = useAIService()
   const [recoveryAttempts, setRecoveryAttempts] = useState(0)
   const [lastRecoveryTime, setLastRecoveryTime] = useState<Date | null>(null)
@@ -41,7 +46,7 @@ export function AIServiceRecovery({ onOpenSettings, className }: AIServiceRecove
 
   // Auto-retry logic
   useEffect(() => {
-    if (autoRetryEnabled && status.serviceStatus === 'unavailable' && !isLoading) {
+    if (autoRetryEnabled && serviceStatus === 'unavailable' && !isLoading) {
       const retryDelay = Math.min(5000 * Math.pow(2, recoveryAttempts), 300000) // Max 5 minutes
       
       const timeout = setTimeout(() => {
@@ -50,7 +55,7 @@ export function AIServiceRecovery({ onOpenSettings, className }: AIServiceRecove
 
       return () => clearTimeout(timeout)
     }
-  }, [autoRetryEnabled, status.serviceStatus, recoveryAttempts, isLoading])
+  }, [autoRetryEnabled, serviceStatus, recoveryAttempts, isLoading])
 
   const handleRecovery = async () => {
     setRecoveryAttempts(prev => prev + 1)
@@ -71,7 +76,7 @@ export function AIServiceRecovery({ onOpenSettings, className }: AIServiceRecove
   }
 
   const getStatusColor = () => {
-    switch (status.serviceStatus) {
+    switch (serviceStatus) {
       case 'healthy': return 'text-green-600'
       case 'degraded': return 'text-yellow-600'
       case 'unavailable': return 'text-red-600'
@@ -80,7 +85,7 @@ export function AIServiceRecovery({ onOpenSettings, className }: AIServiceRecove
   }
 
   const getStatusIcon = () => {
-    switch (status.serviceStatus) {
+    switch (serviceStatus) {
       case 'healthy': return CheckCircle
       case 'degraded': return AlertTriangle
       case 'unavailable': return XCircle
@@ -134,22 +139,22 @@ export function AIServiceRecovery({ onOpenSettings, className }: AIServiceRecove
           <div>
             <div className="text-sm font-medium">Service Status</div>
             <Badge 
-              variant={status.serviceStatus === 'healthy' ? 'default' : 'secondary'}
+              variant={serviceStatus === 'healthy' ? 'default' : 'secondary'}
               className="mt-1"
             >
-              {status.serviceStatus === 'healthy' && <Wifi className="h-3 w-3 mr-1" />}
-              {status.serviceStatus !== 'healthy' && <WifiOff className="h-3 w-3 mr-1" />}
-              {status.serviceStatus.charAt(0).toUpperCase() + status.serviceStatus.slice(1)}
+              {serviceStatus === 'healthy' && <Wifi className="h-3 w-3 mr-1" />}
+              {serviceStatus !== 'healthy' && <WifiOff className="h-3 w-3 mr-1" />}
+              {serviceStatus.charAt(0).toUpperCase() + serviceStatus.slice(1)}
             </Badge>
           </div>
           
           <div>
             <div className="text-sm font-medium">Mode</div>
             <Badge 
-              variant={status.isFallbackMode ? 'secondary' : 'default'}
+              variant={isFallbackMode ? 'secondary' : 'default'}
               className="mt-1"
             >
-              {status.isFallbackMode ? 'Offline' : 'Online'}
+              {isFallbackMode ? 'Offline' : 'Online'}
             </Badge>
           </div>
         </div>
@@ -159,15 +164,15 @@ export function AIServiceRecovery({ onOpenSettings, className }: AIServiceRecove
           <div className="flex justify-between text-sm">
             <span>Last Health Check:</span>
             <span className="text-muted-foreground">
-              {formatLastCheck(status.lastHealthCheck)}
+              {formatLastCheck(lastHealthCheck)}
             </span>
           </div>
           
-          {status.consecutiveFailures > 0 && (
+          {consecutiveFailures > 0 && (
             <div className="flex justify-between text-sm">
               <span>Consecutive Failures:</span>
               <span className="text-red-600 font-medium">
-                {status.consecutiveFailures}
+                {consecutiveFailures}
               </span>
             </div>
           )}
@@ -187,19 +192,19 @@ export function AIServiceRecovery({ onOpenSettings, className }: AIServiceRecove
           <div className="text-sm font-medium">Request Queue</div>
           <div className="grid grid-cols-4 gap-2 text-xs">
             <div className="text-center">
-              <div className="font-medium">{status.queueStatus.pending}</div>
+              <div className="font-medium">{queueStatus.pending}</div>
               <div className="text-muted-foreground">Pending</div>
             </div>
             <div className="text-center">
-              <div className="font-medium">{status.queueStatus.processing}</div>
+              <div className="font-medium">{queueStatus.processing}</div>
               <div className="text-muted-foreground">Processing</div>
             </div>
             <div className="text-center">
-              <div className="font-medium">{status.queueStatus.completed}</div>
+              <div className="font-medium">{queueStatus.completed}</div>
               <div className="text-muted-foreground">Completed</div>
             </div>
             <div className="text-center">
-              <div className="font-medium">{status.queueStatus.failed}</div>
+              <div className="font-medium">{queueStatus.failed}</div>
               <div className="text-muted-foreground">Failed</div>
             </div>
           </div>
@@ -221,7 +226,7 @@ export function AIServiceRecovery({ onOpenSettings, className }: AIServiceRecove
         )}
 
         {/* Auto-retry Status */}
-        {autoRetryEnabled && status.serviceStatus === 'unavailable' && (
+        {autoRetryEnabled && serviceStatus === 'unavailable' && (
           <Alert>
             <Info className="h-4 w-4" />
             <AlertDescription>
@@ -239,7 +244,7 @@ export function AIServiceRecovery({ onOpenSettings, className }: AIServiceRecove
 
         {/* Action Buttons */}
         <div className="flex flex-wrap gap-2">
-          {status.serviceStatus !== 'healthy' && (
+          {serviceStatus !== 'healthy' && (
             <Button
               onClick={handleRecovery}
               disabled={isLoading}
@@ -260,7 +265,7 @@ export function AIServiceRecovery({ onOpenSettings, className }: AIServiceRecove
             </Button>
           )}
           
-          {!status.isFallbackMode && status.serviceStatus !== 'healthy' && (
+          {!isFallbackMode && serviceStatus !== 'healthy' && (
             <Button
               onClick={handleEnableFallback}
               size="sm"
@@ -271,7 +276,7 @@ export function AIServiceRecovery({ onOpenSettings, className }: AIServiceRecove
             </Button>
           )}
           
-          {status.serviceStatus === 'unavailable' && (
+          {serviceStatus === 'unavailable' && (
             <Button
               onClick={() => setAutoRetryEnabled(!autoRetryEnabled)}
               size="sm"
@@ -295,7 +300,7 @@ export function AIServiceRecovery({ onOpenSettings, className }: AIServiceRecove
         </div>
 
         {/* Recovery Tips */}
-        {status.serviceStatus !== 'healthy' && (
+        {serviceStatus !== 'healthy' && (
           <div className="mt-4 p-3 bg-muted rounded-lg">
             <div className="text-sm font-medium mb-2">Recovery Tips:</div>
             <ul className="text-xs text-muted-foreground space-y-1">
@@ -315,9 +320,9 @@ export function AIServiceRecovery({ onOpenSettings, className }: AIServiceRecove
  * Compact AI Service Recovery Button
  */
 export function AIServiceRecoveryButton({ className }: { className?: string }) {
-  const { isEnabled, isLoading, error } = useAIService()
+  const { isEnabled, isLoading, error, serviceStatus, disableFallbackMode } = useAIService()
 
-  if (status.serviceStatus === 'healthy') {
+  if (serviceStatus === 'healthy') {
     return null
   }
 

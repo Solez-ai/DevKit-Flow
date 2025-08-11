@@ -52,7 +52,15 @@ export function AIRegexAssistant({
     })
     
     if (response) {
-      setLastResponse(response)
+      const aiResponse: AIResponse = {
+        id: `gen_${Date.now()}`,
+        requestId: `req_${Date.now()}`,
+        content: response.content,
+        confidence: response.confidence,
+        timestamp: new Date(),
+        processingTime: 0
+      }
+      setLastResponse(aiResponse)
       // Extract pattern from response (assuming it's in the content)
       const patternMatch = response.content.match(/`([^`]+)`/)
       if (patternMatch) {
@@ -73,7 +81,15 @@ export function AIRegexAssistant({
     })
     
     if (response) {
-      setLastResponse(response)
+      const aiResponse: AIResponse = {
+        id: `opt_${Date.now()}`,
+        requestId: `req_${Date.now()}`,
+        content: response.content,
+        confidence: response.confidence,
+        timestamp: new Date(),
+        processingTime: 0
+      }
+      setLastResponse(aiResponse)
       // Extract optimized pattern from response
       const patternMatch = response.content.match(/`([^`]+)`/)
       if (patternMatch) {

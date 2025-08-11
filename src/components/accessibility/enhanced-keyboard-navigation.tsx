@@ -320,7 +320,7 @@ export const EnhancedKeyboardNavigation: React.FC<EnhancedKeyboardNavigationProp
     });
 
     if (bestCandidate) {
-      bestCandidate.focus();
+      (bestCandidate as HTMLElement).focus();
       updateFocusIndicator(bestCandidate);
     }
   }, [updateFocusIndicator]);

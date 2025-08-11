@@ -9,7 +9,7 @@ import type { AIServiceStatus } from '@/types'
  * Automatically shows toast notifications for AI service status changes
  */
 export function AIStatusToastManager() {
-  const { isEnabled, isLoading, error } = useAIService()
+  const status = useAIService()
   const previousStatus = useRef<AIServiceStatus | null>(null)
   const hasShownInitialStatus = useRef(false)
 

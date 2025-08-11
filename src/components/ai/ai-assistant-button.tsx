@@ -93,9 +93,10 @@ export function AIAssistantButton({
     try {
       const result = await sendRequest(prompt, context)
       if (result) {
-        setResponse(result.content)
+        const content = typeof result === 'string' ? result : (result as any).content
+        setResponse(content)
         if (onResponse) {
-          onResponse(result.content)
+          onResponse(content)
         }
       }
     } catch (err) {

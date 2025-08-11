@@ -99,12 +99,13 @@ Rate the current pattern's optimization level from 1-100 and explain the score.`
       })
       
       if (response) {
+        const content = (response as any)
         // Parse the response to extract suggestions and score
-        const parsedSuggestions = parseOptimizationResponse(response.content)
+        const parsedSuggestions = parseOptimizationResponse(content)
         setSuggestions(parsedSuggestions)
         
         // Extract optimization score
-        const scoreMatch = response.content.match(/(\d+)\/100|(\d+)%/)
+        const scoreMatch = content.match(/(\d+)\/100|(\d+)%/)
         if (scoreMatch) {
           setOptimizationScore(parseInt(scoreMatch[1] || scoreMatch[2]))
         }

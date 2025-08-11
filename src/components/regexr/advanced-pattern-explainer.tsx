@@ -428,7 +428,7 @@ Keep the explanation clear and educational.`
         components: components.length
       })
       
-      return response?.content || null
+      return (response as any) || null
     } catch (err) {
       console.error('Failed to get AI explanation:', err)
       return null

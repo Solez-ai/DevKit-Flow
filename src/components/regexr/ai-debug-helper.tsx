@@ -84,7 +84,14 @@ Be specific and educational in your response.`
     })
     
     if (response) {
-      setLastResponse(response)
+      const aiResponse: AIResponse = {
+        id: `debug_${Date.now()}`,
+        requestId: `req_${Date.now()}`,
+        content: (response as any),
+        timestamp: new Date(),
+        processingTime: 0
+      }
+      setLastResponse(aiResponse)
     }
   }, [pattern, testString, expectedResult, actualResult, customIssue, sendRequest, clearError])
 
@@ -114,7 +121,14 @@ Focus on practical improvements and explain the reasoning.`
     })
     
     if (response) {
-      setLastResponse(response)
+      const aiResponse: AIResponse = {
+        id: `perf_${Date.now()}`,
+        requestId: `req_${Date.now()}`,
+        content: (response as any),
+        timestamp: new Date(),
+        processingTime: 0
+      }
+      setLastResponse(aiResponse)
     }
   }, [pattern, performanceIssue, sendRequest, clearError])
 
@@ -144,7 +158,14 @@ Focus on practical alternatives with clear explanations.`
     })
     
     if (response) {
-      setLastResponse(response)
+      const aiResponse: AIResponse = {
+        id: `alt_${Date.now()}`,
+        requestId: `req_${Date.now()}`,
+        content: (response as any),
+        timestamp: new Date(),
+        processingTime: 0
+      }
+      setLastResponse(aiResponse)
     }
   }, [pattern, testString, sendRequest, clearError])
 

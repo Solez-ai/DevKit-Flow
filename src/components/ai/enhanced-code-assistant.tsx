@@ -331,7 +331,8 @@ export function EnhancedCodeAssistant({
       }
 
       if (response) {
-        setResponse(response.content)
+        const content = typeof response === 'string' ? response : (response as any).content
+        setResponse(content)
       }
     } catch (err) {
       // Error is handled by the hook
@@ -350,7 +351,8 @@ export function EnhancedCodeAssistant({
       const response = await sendRequest(customPrompt, context)
       
       if (response) {
-        setResponse(response.content)
+        const content = typeof response === 'string' ? response : (response as any).content
+        setResponse(content)
       }
     } catch (err) {
       // Error is handled by the hook

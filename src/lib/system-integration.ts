@@ -152,17 +152,7 @@ export class SystemIntegrationManager {
     }
   }
 
-  private handleAIResponse(response: any, context: any): void {
-    // Handle AI responses and integrate with other components
-    // TODO: Implement proper AI response handling
-    console.log('AI Response received:', { response, context });
-  }
-
-  private notifyTemplateSuggestions(suggestions: any[]): void {
-    // Notify user about template suggestions
-    // TODO: Implement proper notification system
-    console.log('Template suggestions:', suggestions);
-  }
+  // Duplicate methods removed - see implementations below
 
   private setupErrorRecovery(): void {
     // Set up automatic error recovery mechanisms

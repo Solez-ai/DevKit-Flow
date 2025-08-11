@@ -61,9 +61,10 @@ Format your response in a clear, educational way.`
       })
       
       if (response) {
-        setExplanation(response.content)
+        const content = (response as any)
+        setExplanation(content)
         setLastPattern(patternToExplain)
-        onExplanationReceived?.(response.content)
+        onExplanationReceived?.(content)
       }
     } catch (err) {
       console.error('Failed to explain pattern:', err)
