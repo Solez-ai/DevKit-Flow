@@ -343,6 +343,7 @@
   :root {
     color-scheme: light;
   }
-}/* Im
-port integration styles */
-@import './styles/integration.css';
+}
+
+/* Import integration styles */
+/* @import './styles/integration.css'; */

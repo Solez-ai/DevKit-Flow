@@ -481,7 +481,8 @@ export function FlowCanvas({ sessionId }: FlowCanvasProps) {
       onCreateNode={handleCreateNode}
     >
       <div 
-        className="flex-1 h-full" 
+        className="flex-1 h-full w-full" 
+        style={{ minHeight: '400px', minWidth: '400px' }}
         ref={reactFlowWrapper}
         onContextMenu={handleCanvasContextMenu}
         onMouseDown={handleCanvasMouseDown}

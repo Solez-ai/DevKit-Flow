@@ -33,7 +33,7 @@
 }
 
 .flow-canvas .react-flow__node {
-  @apply shadow-sm border border-border rounded-lg bg-card;
+  @apply shadow-sm border border-gray-200 rounded-lg bg-card;
 }
 
 .flow-canvas .react-flow__node.selected {
@@ -50,13 +50,13 @@
 
 /* Node styles */
 .devflow-node {
-  @apply bg-card border border-border rounded-lg shadow-sm;
+  @apply bg-card border border-gray-200 rounded-lg shadow-sm;
   min-width: 200px;
   min-height: 120px;
 }
 
 .devflow-node-header {
-  @apply p-3 border-b border-border bg-muted/50 rounded-t-lg;
+  @apply p-3 border-b border-gray-200 bg-muted/50 rounded-t-lg;
 }
 
 .devflow-node-content {
@@ -64,7 +64,7 @@
 }
 
 .devflow-node-footer {
-  @apply p-2 border-t border-border bg-muted/30 rounded-b-lg;
+  @apply p-2 border-t border-gray-200 bg-muted/30 rounded-b-lg;
 }
 
 /* Node type specific styles */
@@ -123,7 +123,7 @@
 
 /* Sidebar styles */
 .app-sidebar {
-  @apply w-64 border-r border-border bg-muted/30;
+  @apply w-64 border-r border-gray-200 bg-muted/30;
   transition: width 0.3s ease;
 }
 
@@ -137,7 +137,7 @@
 
 /* Properties panel styles */
 .properties-panel {
-  @apply w-96 border-l border-border bg-muted/50 overflow-y-auto;
+  @apply w-96 border-l border-gray-200 bg-muted/50 overflow-y-auto;
 }
 
 .properties-panel-content {
@@ -185,7 +185,7 @@
 }
 
 .error-card {
-  @apply w-full max-w-2xl bg-card border border-border rounded-lg shadow-lg;
+  @apply w-full max-w-2xl bg-card border border-gray-200 rounded-lg shadow-lg;
 }
 
 /* Accessibility improvements */
