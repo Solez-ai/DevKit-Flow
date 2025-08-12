@@ -36,22 +36,29 @@ function AppContent() {
   useKeyboardNavigation()
 
   useEffect(() => {
+    console.log('App: Initializing...')
     const initializeApp = async () => {
       try {
+        console.log('App: Starting system integration...')
         // Initialize system integration (handles all subsystems)
         await systemIntegration.initialize()
         
+        console.log('App: Updating storage quota...')
         // Update storage quota on app start
         await updateStorageQuota()
         
+        console.log('App: Loading sessions and templates...')
         // Load sessions and templates
         await Promise.all([
           loadSessions(),
           loadTemplates()
         ])
         
+        console.log('App: Initializing AI service...')
         // Initialize AI service (non-blocking)
         initializeAI().catch(console.warn)
+        
+        console.log('App: Initialization complete!')
       } catch (error) {
         console.error('Failed to initialize app:', error)
       }
@@ -60,9 +67,18 @@ function AppContent() {
     initializeApp()
   }, [updateStorageQuota, initializeAI, loadSessions, loadTemplates])
 
+  useEffect(() => {
+    // Debug theme and CSS variables
+    console.log('App: Current theme classes:', document.documentElement.classList.toString())
+    console.log('App: CSS variables check:')
+    console.log('  --background:', getComputedStyle(document.documentElement).getPropertyValue('--background'))
+    console.log('  --foreground:', getComputedStyle(document.documentElement).getPropertyValue('--foreground'))
+    console.log('  --primary:', getComputedStyle(document.documentElement).getPropertyValue('--primary'))
+  }, [])
+
   return (
     <>
-      <div className="min-h-screen bg-background font-sans antialiased">
+      <div className="app-container">
         <SkipLinks />
         <AppShell />
         <OnboardingModal />

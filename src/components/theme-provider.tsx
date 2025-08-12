@@ -35,6 +35,7 @@ export function ThemeProvider({
 
   useEffect(() => {
     const root = window.document.documentElement
+    console.log('ThemeProvider: Setting theme to', theme)
 
     root.classList.remove("light", "dark")
 
@@ -43,17 +44,26 @@ export function ThemeProvider({
         .matches
         ? "dark"
         : "light"
-
+      
+      console.log('ThemeProvider: System theme detected as', systemTheme)
       root.classList.add(systemTheme)
+      
+      // Also set the theme in the store
+      setStoreTheme(systemTheme as ThemeType)
       return
     }
 
+    console.log('ThemeProvider: Adding theme class', theme)
     root.classList.add(theme)
-  }, [theme])
+    
+    // Also set the theme in the store
+    setStoreTheme(theme as ThemeType)
+  }, [theme, setStoreTheme])
 
   const value = {
     theme,
     setTheme: (theme: Theme) => {
+      console.log('ThemeProvider: setTheme called with', theme)
       setTheme(theme)
       setStoreTheme(theme as ThemeType)
     },

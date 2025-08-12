@@ -61,6 +61,7 @@ export function StudioWorkspace() {
   const selectedNode = currentSession?.nodes.find(n => n.id === selectedNodeId)
 
   const createNewSession = useCallback(() => {
+    console.log('Creating new session...')
     const newSession: DevFlowSession = {
       id: generateId(),
       name: `New Session ${sessions.length + 1}`,
@@ -222,8 +223,14 @@ export function StudioWorkspace() {
       timeline: []
     }
     
+    console.log('New session created:', newSession)
     addSession(newSession)
   }, [sessions.length, addSession])
+
+  const handleImportSession = useCallback(() => {
+    console.log('Import session clicked')
+    // TODO: Implement import functionality
+  }, [])
 
   const handleZoomIn = () => {
     setCanvasState(prev => ({ ...prev, zoom: Math.min(prev.zoom * 1.2, 3) }))
@@ -246,24 +253,32 @@ export function StudioWorkspace() {
       <div className="flex-1 flex items-center justify-center bg-background p-8">
         <Card className="w-full max-w-md shadow-lg">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-bold text-foreground">Welcome to DevFlow Studio</CardTitle>
+            <CardTitle className="welcome-title">Welcome to DevFlow Studio</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-6">
-            <p className="text-muted-foreground text-center">
+          <CardContent className="welcome-actions">
+            <p className="welcome-description">
               Create your first coding session to start planning your development workflow visually.
             </p>
             <div className="space-y-3">
-              <Button onClick={createNewSession} className="w-full h-12 text-base">
+              <Button 
+                onClick={createNewSession} 
+                className="btn btn-primary w-full h-12 text-base"
+                variant="default"
+              >
                 <Plus className="h-5 w-5 mr-2" />
                 Create New Session
               </Button>
-              <Button variant="outline" className="w-full h-12 text-base">
+              <Button 
+                variant="outline" 
+                className="btn btn-outline w-full h-12 text-base"
+                onClick={handleImportSession}
+              >
                 <Upload className="h-5 w-5 mr-2" />
                 Import Session
               </Button>
             </div>
             <div className="text-center">
-              <p className="text-sm text-muted-foreground">
+              <p className="welcome-footer">
                 Start building your development workflow with visual nodes and connections.
               </p>
             </div>
@@ -321,7 +336,6 @@ export function StudioWorkspace() {
           <EnhancedCodeAssistant 
             node={selectedNode}
             onCodeGenerated={(code, language, title) => {
-              // Handle AI-generated code by adding it to the current node
               if (selectedNode && currentSession) {
                 const newSnippet = {
                   id: generateId(),
@@ -461,11 +475,9 @@ export function StudioWorkspace() {
                   <AIContextPanel 
                     selectedNode={selectedNode}
                     onCodeGenerated={(code, language, title) => {
-                      // Handle AI-generated code
                       console.log('AI generated code:', { code, language, title })
                     }}
                     onSuggestionApplied={(suggestion) => {
-                      // Handle AI suggestions
                       console.log('AI suggestion applied:', suggestion)
                     }}
                   />
